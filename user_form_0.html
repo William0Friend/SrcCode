@@ -1,0 +1,25 @@
+<!--HTML5 form to create a new user account in the `users` table:-->
+
+<form action="/create_user" method="post">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
+    <br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+    <br>
+    <label for="type">Type:</label>
+    <select id="type" name="type">
+        <option value="developer">Developer</option>
+        <option value="non-developer">Non-Developer</option>
+    </select>
+    <br>
+    <input type="submit" value="Create Account">
+</form>
+
+<!--NOTES:
+form includes fields for entering a `username`, `password`, and selecting a `type` (either 'developer' or 'non-developer'). 
+When the form is submitted, the data would be sent to the server-side script specified in the `action` attribute 
+(in this case, `/create_user`) using the HTTP `POST` method.
+The server-side script is be responsible for hashing the entered password 
+and inserting a new row into the `users` table with the provided data.
+-->

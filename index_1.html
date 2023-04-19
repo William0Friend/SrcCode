@@ -1,0 +1,161 @@
+﻿<!--
+Due: 	Wednesday, Feb 8th (by 11:59 PM)
+
+Description:   Create a single, home (landing) page for your e-commerce website.  
+The content of the page should communicate the type, purpose, philosophy, goals, 
+and themes of the business.
+
+Characteristics:  This first page must be written in HTML5 and use Bootstrap.  
+At your option, the page may also incorporate CSS, JSON or XML. 
+It should include the following:
+•	Banner
+•	Navigation bar
+•	Hyperlinks to other pages
+•	Images (optimized for web sites)
+•	Lists and tables/grids.
+•	Your website should have a distinctive, yet consistent style.  
+I want to see evidence that you are experimenting with different elements and style attributes
+•	Use of forms is not necessary or encouraged at this stage of the project.
+•	Must be viewable in a 1280 x 768 pixel resolution display.  
+Your page must still render correctly if resized (Bootstrap will help in this regard).
+.
+Submission:  Place all materials in a single directory (subdirectories are allowed).  
+Zip up all material into a single file and upload to the D2L dropbox.
+
+Caveats:
+•	This is not a throw-away project.  Ideally, you will modify and build on this website 
+in subsequent individual projects—so do a good job.
+•	For full credit, must render properly on the latest version Edge, Chrome, and Firefox browsers
+•	Use HTML5 to define webpage structure only. Avoid using HTML elements that 
+are deprecated and/or implement style; instead, use CSS commands to control webpage styling.
+•	This is NOT a team effort—it needs to be your own work
+•	Feel free to browse other e-commerce websites for inspiration, 
+but do not lift another website wholesale
+•	You may use rudimentary Bootstrap templates, but not those for 
+commercial web sites
+•	Please only create a single landing page at this point
+•	Bloated submissions are not appreciated.  Ditto with pages that load slowly.  
+Strive to keep your submission relative compact (ideally under 50MB).  
+In line with this goal, compress images as needed.
+
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SrcCode</title>
+    <link rel="stylesheet" href="Assets/Css/styles.css" />
+    <script defer src="Assets/JavaScript/script.js"></script>
+    <!-- Your page must still render correctly if resized (Bootstrap will help in this regard). -->
+    <!-- BootStrap -> CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" 
+          rel="stylesheet" 
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" 
+          crossorigin="anonymous">   
+</head>
+
+<body>
+
+    <!-- •	Banner -->
+    <!--
+    <nav class="nav justify-content-end bg-dark">
+        <a class="nav-link active" aria-current="page" href="#">Active</a>
+        <a class="nav-link" href="#">Link</a>
+        <a class="nav-link" href="#">Link</a>
+        <a class="nav-link disabled">Disabled</a>
+    </nav>
+    -->
+    <!-- •	Hyperlinks to other pages -->
+    <!-- •	Images (optimized for web sites) -->
+    <!-- •	Lists and tables/grids. -->
+    <!-- •	Your website should have a distinctive, yet consistent style. -->
+    <!-- I want to see evidence that you are experimenting with different elements and style attributes -->
+    <!-- •	Use of forms is not necessary or encouraged at this stage of the project. -->
+    <!-- •	Must be viewable in a 1280 x 768 pixel resolution display. -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                    aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                    aria-label="Toggle navigation">
+
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link" href="#">Features</a>
+                    <a class="nav-link" href="#">Pricing</a>
+                    <a class="nav-link" href="#">About</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <script src="nav.js"></script>
+    <p>The time is @DateTime.Now</p>
+
+    <canvas id="myCanvas" width="300" height="200"></canvas>
+    <script type="text/javascript">
+        window.onload = function () {
+            var canvas = document.getElementById("myCanvas");
+            var context = canvas.getContext("2d");
+            context.moveTo(50, 150);
+            context.lineTo(250, 50);
+            context.stroke();
+        };
+    </script>
+
+    <!-- HTML5 way of displaying main content of page -->
+    <main>
+        <h1>SrcCode</h1>
+        <p>
+            SrcCode is a platform designed to help developers and nondevelopers
+            team up and create new solutions and startups. At SrCode, we
+            want to make getting paid for your code as painless as possible.
+        </p>
+        <article>
+            <h2>Buy SrcCode</h2>
+            <p>
+                If you have a problems that need solving, like..
+
+                <ul>
+                    <li>you have an idea for the next great website,</li>
+                    <li>if you have need a single small application produced,</li>
+                    <li>you are in need of quick solution to an internal buiness problem,
+                    <li>
+                </ul>
+                but you don't know what to do next, click here...
+            </p>
+            <button>Buy</button>
+        </article>
+        <article>
+            <h2>Sell SrcCode</h2>
+            <p>
+                If you're a programmer, scientist, engineer, or developer, looking to
+                monotize your skills, SrcCode's mission is to make even selling a few lines of code
+                or a few minutes of your time, possible.
+                <ul>
+                    <li>Buy</li>
+                    <li>Sell</li>
+                    <li>Volunteer</li>
+                </ul>
+                click here...
+            </p>
+            <button>Sell</button>
+        </article>
+    </main>
+
+    <!-- Your page must still render correctly if resized (Bootstrap will help in this regard). -->
+    <!-- BootStrap -> JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            crossorigin="anonymous"></script>
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+            crossorigin="anonymous"></script>
+</body>
+    </html>
