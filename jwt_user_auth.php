@@ -19,8 +19,8 @@ if ($user) {
         'sub' => $user->id,
         'username' => $user->username
     );
-    $jwt = JWT::encode($payload, $secret_key);
-    // Return the JWT as a JSON object
+    $jwt = JWT::encode($payload, $secret_key);    
+// Return the JWT as a JSON object
     echo json_encode(array('token' => $jwt));
 } else {
     // If the user does not exist, return an error message

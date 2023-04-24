@@ -1,0 +1,46 @@
+CREATE TABLE User (
+id INT(11) NOT NULL AUTO_INCREMENT,
+username VARCHAR(255) NOT NULL,
+password VARCHAR(255) NOT NULL,
+email VARCHAR(255) NOT NULL,
+is_developer BOOLEAN NOT NULL,
+PRIMARY KEY (id)
+);
+
+CREATE TABLE Code (
+id INT(11) NOT NULL AUTO_INCREMENT,
+user_id INT(11) NOT NULL,
+title VARCHAR(255) NOT NULL,
+description TEXT NOT NULL,
+price DECIMAL(10,2) NOT NULL,
+is_for_sale BOOLEAN NOT NULL,
+is_code BOOLEAN NOT NULL,
+file_path VARCHAR(255) NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (user_id) REFERENCES User(id)
+);
+
+CREATE TABLE Transaction (
+id INT(11) NOT NULL AUTO_INCREMENT,
+buyer_id INT(11) NOT NULL,
+seller_id INT(11) NOT NULL,
+code_id INT(11) NOT NULL,
+transaction_date DATETIME NOT NULL,
+price DECIMAL(10,2) NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (buyer_id) REFERENCES User(id),
+FOREIGN KEY (seller_id) REFERENCES User(id),
+FOREIGN KEY (code_id) REFERENCES Code(id)
+);
+
+CREATE TABLE CodingProblem (
+id INT(11) NOT NULL AUTO_INCREMENT,
+user_id INT(11) NOT NULL,
+title VARCHAR(255) NOT NULL,
+description TEXT NOT NULL,
+payment_offer DECIMAL(10,2) NOT NULL,
+is_solved BOOLEAN NOT NULL,
+estimated_lines_of_code INT(11) NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (user_id) REFERENCES User(id)
+);
