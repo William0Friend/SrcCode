@@ -1,3 +1,4 @@
+<?php
 // register.php
 require 'config.php'; // Include your database configuration
 
@@ -46,3 +47,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(['success' => false, 'message' => 'Invalid username or password.']);
     }
 }
+?>

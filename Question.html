@@ -1,13 +1,12 @@
-<!-- login.php -->
+<!-- question.php -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+    <title>Question</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <!--Javascript-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script></head>
-</head>
 <body>
 
 <header>
@@ -26,12 +25,11 @@
                         <a class="nav-link" href="Register.html" title="Register">Register</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="Login.html" title="Login">Login</a>
+                        <a class="nav-link" href="Login.html" title="Login">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Question.html" title="question">Question</a>
+                        <a class="nav-link active" href="Question.html" title="question">Question</a>
                     </li>
-                   
                     <li class="nav-item">
                         <a class="nav-link" href="Post_Question.html" title="Post Question">Post</a>
                     </li>
@@ -48,40 +46,52 @@
     
 </header>
 
-    
-    <div class="container">
-        <h2 class="my-3">Login Form</h2>
-        <form id="loginForm">
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Login</button>
-        </form>
+    <div id="question">
+        <!-- The question will be loaded dynamically using JavaScript/jQuery -->
     </div>
 
+    <div id="answers">
+        <!-- The answers will be loaded dynamically using JavaScript/jQuery -->
+    </div>
+
+    <form id="answerForm">
+        <textarea id="answer" name="answer"></textarea>
+        <button type="submit">Submit</button>
+    </form>
+
     <script>
-        $("#loginForm").submit(function(e) {
+        // Get the question ID from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const questionId = urlParams.get('id');
+
+        // Fetch the question and answers from the server
+        $.get("get_question.php?id=" + questionId, function(data) {
+            // Populate the question
+            $("#question").html(`<h2>${data.question.question}</h2><p>Bounty: ${data.question.bounty}</p>`);
+
+            // Populate the answers
+            data.answers.forEach(answer => {
+                $("#answers").append(`<p>${answer.answer}</p>`);
+            });
+        });
+
+        // Handle the answer form submission
+        $("#answerForm").submit(function(e) {
             e.preventDefault();
 
-            const formData = {
-                username: $("#username").val(),
-                password: $("#password").val()
-            };
+            const answer = $("#answer").val();
 
-            $.post("login_action.php", formData, function(response) {
+            // Send the answer to the server
+            $.post("submit_answer.php", { questionId, answer }, function(response) {
                 if (response.success) {
-                    alert("Login successful!");
-                    window.location.href = "userpage.php";
+                    alert("Answer submitted successfully.");
+                    location.reload(); // Reload the page to show the new answer
                 } else {
-                    alert(response.message);
+                    alert("Failed to submit answer.");
                 }
-            }, "json");
+            });
         });
     </script>
 </body>
+
 </html>

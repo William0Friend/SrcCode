@@ -1,7 +1,7 @@
-#PHP script that could be used to search for code snippets based on their description:
 
 
 <?php
+//PHP script that could be used to search for code snippets based on their description:
 
 // Connect to the MySQL database
 $db = new mysqli('hostname', 'username', 'password', 'myDatabase');

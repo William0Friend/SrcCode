@@ -1,9 +1,9 @@
 <?php
 // config.php
 $host = 'localhost';
-$dbname = 'srccode';
-$user = 'your_db_user';
-$password = 'your_db_password';
+$dbname = 'srccode2';
+$user = 'root';
+$password = 'usbw';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
