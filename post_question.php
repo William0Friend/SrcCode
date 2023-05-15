@@ -1,33 +1,36 @@
 <?php
-// Start the session
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 
-// Check if the user is logged in
-if (!isset($_SESSION['userId'])) {
-    echo json_encode(['success' => false]);
+if (!isset($_SESSION['loggedin'])) {
+    header('Location: Login.php');
     exit;
 }
+// TODO: Validate and sanitize the title, body and bounty
 
-// Get the question and bounty from the request
-$question = $_POST['question'];
-$bounty = $_POST['bounty'];
-
-// TODO: Validate and sanitize the question and bounty
-
+// Get the title, body, and bounty from the request
+$title = htmlspecialchars($_POST['title']);
+$body = htmlspecialchars($_POST['body']);
+$bounty = htmlspecialchars($_POST['bounty']);
 // Get the user ID from the session
-$userId = $_SESSION['userId'];
+$userId = $_SESSION['id'];
 
 // Database connection
 require 'db_connection.php';
 
 // Insert the question into the database
-$sql = "INSERT INTO questions (user_id, question, bounty) VALUES (?, ?, ?)";
+$sql = "INSERT INTO Questions (user_id, title, body, bounty) VALUES (?, ?, ?, ?)";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("isi", $userId, $question, $bounty);
-
-if ($stmt->execute()) {
-    echo json_encode(['success' => true]);
+$stmt->bind_param("issi", $userId, $title, $body, $bounty);
+$s = $stmt->execute();
+if ($s) {
+    echo json_encode(['success' => true, 'message' => 'Question posted successfully.']);
 } else {
-    echo json_encode(['success' => false]);
+    echo json_encode(['success' => false, 'message' => 'Failed to post question. Error: '.$conn->error]);
 }
+$stmt->close();
+$conn->close();
 ?>

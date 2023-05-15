@@ -1,10 +1,14 @@
 <?php
-// db_connection.php
+
+//error xdebug reporting
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 $servername = "localhost";
 $username = "root";
 $password = "N0th1ng4u";
-$dbname = "srccode0";
+$dbname = "srccode";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -13,4 +17,5 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-echo '<div>Connected successfully</div>';
+echo "Connected successfully";
+?>
