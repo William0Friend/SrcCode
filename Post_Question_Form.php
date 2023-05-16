@@ -88,25 +88,6 @@ if (!isset($_SESSION['loggedin'])) {
     </form>
 </div>
     <script>
-//         // Handle the question form submission
-//         $("#questionForm").submit(function(e) {
-//             e.preventDefault();
-        
-//         const formData = {
-//             const title = $("#title").val();
-//             const body = $("#body").val();
-//             const bounty = $("#bounty").val();
-//         }
-//             // Send the question and bounty to the server
-//             $.post("post_question.php", formData, function(response) {
-//                 if (response.success) {
-//                     alert("Question posted successfully.");
-//                     window.location.href = 'User.php'; // Redirect to the user page
-//                 } else {
-//                     alert("Failed to post question.");
-//                 }
-//             }, "json");
-//         });
     // Handle the question form submission
     $("#questionForm").submit(function(e) {
         e.preventDefault();
