@@ -21,7 +21,7 @@ if (mysqli_connect_errno()) {
     exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
 
-$sql = "SELECT Questions.id, Users.username, Questions.title, Questions.body, Bounties.bounty, Questions.timestamp
+$sql = "SELECT Questions.id, Users.username, Questions.title, Questions.body, Bounties.amount, Questions.timestamp
         FROM Questions
         LEFT JOIN Users ON Questions.user_id = Users.id
         LEFT JOIN Bounties ON Questions.bounty_id = Bounties.id
@@ -139,6 +139,7 @@ $conn->close();
 </form>
 </div>
  <!-- Unanswered questions table -->
+ <h2>Unanswered Questions Table</h2>
  <div class="container">
     <table class="table">
 		<tr><th>Username</th><th>Title</th><th>Body</th><th>Bounty</th><th>Timestamp</th></tr>
