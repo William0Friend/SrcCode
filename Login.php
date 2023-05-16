@@ -1,6 +1,6 @@
 <?php
 # Initialize session
-session_start();
+ session_start();
 
 # Check if user is already logged in, If yes then redirect him to User page
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
@@ -33,11 +33,11 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
                     <a class="nav-link" aria-current="page" href="index.php">Home</a>
                 </li>
                                 <?php if (!isset($_SESSION["loggedin"])): ?>
+<!--                 <li class="nav-item"> -->
+<!--                     <a class="nav-link" href="Register.php" title="Register">Register</a> -->
+<!--                 </li> -->
                 <li class="nav-item">
-                    <a class="nav-link" href="Register.php" title="Register">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="Register_ReCAPTCHA.php" title="Register">Register_ReCAPTCHA</a>
+                    <a class="nav-link" href="Register_ReCAPTCHA.php" title="Register">Register</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" href="Login.php" title="Login">Login</a>
@@ -68,39 +68,59 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
 
 
   <main>  
-<!--     <div class="container"> -->
+
+    <!--          <div class="container"> -->
+    <!--         <h2 class="my-3">Login Form</h2> -->
+            
+    <!--            <form id="loginForm" method="POST" action="login_action.php"> -->
+    <!--            <div class="mb-3">  -->
+    <!--             <label for="username">Username:</label> -->
+    <!--             <input type="text" class="form-control" id="username" name="username" required> -->
+    <!-- 			 </div> -->
+    			 
+    <!-- 			<div class="mb-3">  -->
+    <!--             <label for="password">Password:</label> -->
+    <!--             <input type="password" class="form-control" id="password" name="password" required> -->
+    <!-- 			 </div> -->
+    			 
+    <!--             <input type="submit" value="Login"> -->
+    <!--         </form> -->
+
+<!--  <div class="container"> -->
 <!--         <h2 class="my-3">Login Form</h2> -->
-<!--         <form id="loginForm"> -->
-<!--             <div class="mb-3"> -->
-<!--                 <label for="username" class="form-label">Username</label> -->
-<!--                 <input type="text" class="form-control" id="username" name="username" required> -->
-<!--             </div> -->
-<!--             <div class="mb-3"> -->
-<!--                 <label for="password" class="form-label">Password</label> -->
-<!--                 <input type="password" class="form-control" id="password" name="password" required> -->
-<!--             </div> -->
-<!--             <button type="submit" class="btn btn-primary">Login</button> -->
+<!--         <form id="loginForm" method="POST" action="login_action.php"> -->
+<!--            <div class="mb-3">  -->
+<!--             <label for="username">Username:</label> -->
+<!--             <input type="text" class="form-control" id="username" name="username" required> -->
+<!--            </div> -->
+<!--            <div class="mb-3">  -->
+<!--             <label for="password">Password:</label> -->
+<!--             <input type="password" class="form-control" id="password" name="password" required> -->
+<!--            </div> -->
+<!--            <input type="submit" value="Login"> -->
 <!--         </form> -->
-        
-         <div class="container">
+<!--     </div> -->
+ <div class="container">
         <h2 class="my-3">Login Form</h2>
-        
-           <form id="loginForm" method="POST" action="login_action.php">
-           <div class="mb-3"> 
-            <label for="username">Username:</label>
-            <input type="text" class="form-control" id="username" name="username" required>
-			 </div>
-			 
-			<div class="mb-3"> 
-            <label for="password">Password:</label>
-            <input type="password" class="form-control" id="password" name="password" required>
-			 </div>
-			 
+        <form id="loginForm" method="POST" action="login_action.php">
+            <?php if(isset($_GET['error'])): ?>
+                <div class="alert alert-danger">
+                    <?= htmlentities($_GET['error']) ?>
+                </div>
+            <?php endif; ?>
+            <div class="mb-3"> 
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="mb-3"> 
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
             <input type="submit" value="Login">
         </form>
-
     </div>
-  
+
+    
 
 <script>
 //     $("#loginForm").submit(function(e) {

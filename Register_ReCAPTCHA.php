@@ -1,12 +1,6 @@
 <?php
-// session_start();
-
-// if (!isset($_SESSION['loggedin'])) {
-//      header('Location: Login.php');
-//      exit;
-//  }
 # Initialize session
-session_start();
+ session_start();
 
 # Check if user is already logged in, If yes then redirect him to User page
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
@@ -29,6 +23,8 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
     <!--Javascript-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+	    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+	
 </head>
 
 <body>
@@ -46,11 +42,11 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
                     <a class="nav-link" aria-current="page" href="index.php">Home</a>
                 </li>
                                 <?php if (!isset($_SESSION["loggedin"])): ?>
+<!--                 <li class="nav-item"> -->
+<!--                     <a class="nav-link" href="Register.php" title="Register">Register</a> -->
+<!--                 </li> -->
                 <li class="nav-item">
-                    <a class="nav-link" href="Register.php" title="Register">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="Register_ReCAPTCHA.php" title="Register">Register_ReCAPTCHA</a>
+                    <a class="nav-link active" href="Register_ReCAPTCHA.php" title="Register">Register</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="Login.php" title="Login">Login</a>
@@ -81,61 +77,79 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
 
 
     <main>
-    <div class="container">
-        <h2 class="my-3">Registration Form</h2>
-        <form id="registrationForm">
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" required>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <div class="mb-3">
-                <label for="confirmPassword" class="form-label">Confirm Password</label>
-                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
-            </div>
-            <div class="mb-3">
-                <div class="g-recaptcha" data-sitekey="6LeX8QgmAAAAAOcNiIR33KEX93i3VpayxDWzBKzu"></div>
-            </div>
-            <button type="submit" class="btn btn-primary">Register</button>
-        </form>
-        <div id="message"></div>
+<!--     <div class="container"> -->
+<!--         <h2 class="my-3">Registration Form</h2> -->
+<!--         <form id="registrationForm"> -->
+<!--             <div class="mb-3"> -->
+<!--                 <label for="username" class="form-label">Username</label> -->
+<!--                 <input type="text" class="form-control" id="username" name="username" required> -->
+<!--             </div> -->
+<!--             <div class="mb-3"> -->
+<!--                 <label for="email" class="form-label">Email</label> -->
+<!--                 <input type="email" class="form-control" id="email" name="email" required> -->
+<!--             </div> -->
+<!--             <div class="mb-3"> -->
+<!--                 <label for="password" class="form-label">Password</label> -->
+<!--                 <input type="password" class="form-control" id="password" name="password" required> -->
+<!--             </div> -->
+<!--             <div class="mb-3"> -->
+<!--                 <label for="confirmPassword" class="form-label">Confirm Password</label> -->
+<!--                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required> -->
+<!--             </div> -->
+<!--             <div class="mb-3"> -->
+<!--                 <div class="g-recaptcha" data-sitekey="6LeX8QgmAAAAAOcNiIR33KEX93i3VpayxDWzBKzu"></div> -->
+<!--             </div> -->
+<!--             <button type="submit" class="btn btn-primary">Register</button> -->
+<!--         </form> -->
+<!--         <div id="message"></div> -->
+<!--     </div> -->
+<form id="registrationForm" action="register_recaptcha_action.php" method="post">
+    <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" id="username" name="username" required>
     </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password" required>
+    </div>
+    <!-- Add reCAPTCHA -->
+    <div class="g-recaptcha" data-sitekey="6LeX8QgmAAAAAOcNiIR33KEX93i3VpayxDWzBKzu"></div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
 
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <script>
-    $("#registrationForm").submit(function(e) {
-        e.preventDefault();
+//     $("#registrationForm").submit(function(e) {
+//         e.preventDefault();
 
-        const password = $("#password").val();
-        const confirmPassword = $("#confirmPassword").val();
+//         const password = $("#password").val();
+//         const confirmPassword = $("#confirmPassword").val();
 
-        if (password !== confirmPassword) {
-            alert("Passwords do not match.");
-            return;
-        }
+//         if (password !== confirmPassword) {
+//             alert("Passwords do not match.");
+//             return;
+//         }
 
-        const formData = {
-            username: $("#username").val(),
-            email: $("#email").val(),
-            password: password,
-            'g-recaptcha-response': grecaptcha.getResponse()
-        };
-
-        $.post("register_recaptcha_action.php", formData, function(response) {
-            $('#message').html(response.message);
-            if (response.success) {
-                window.location.href = 'User.php';  
-            }
-        }, "json");
-    });
+//         const formData = {
+//             username: $("#username").val(),
+//             email: $("#email").val(),
+//             password: password,
+//             'g-recaptcha-response': grecaptcha.getResponse()
+//         };
+//         $.post("register_recaptcha_action.php", formData, function(response) {
+//             if (response.success) {
+//                 window.location.href = 'User.php';  
+//             } else {
+//                 // Display an error message
+//                 $('#message').html(response.message);
+//             }
+//         }, "json");
+//     });
+    
 </script>
 
 </main>

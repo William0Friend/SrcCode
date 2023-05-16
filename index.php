@@ -2,11 +2,6 @@
 # Initialize session
 session_start();
 
-# Check if user is already logged in, If yes then redirect him to User page
-// if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
-//     echo "<script>" . "window.location.href='./User.php'" . "</script>";
-//     exit;
-// }
 ?>
 <!doctype html>
 <html lang="en">
@@ -38,11 +33,11 @@ session_start();
                     <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                 </li>
                                 <?php if (!isset($_SESSION["loggedin"])): ?>
+<!--                 <li class="nav-item"> -->
+<!--                     <a class="nav-link" href="Register.php" title="Register">Register</a> -->
+<!--                 </li> -->
                 <li class="nav-item">
-                    <a class="nav-link" href="Register.php" title="Register">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="Register_ReCAPTCHA.php" title="Register">Register_ReCAPTCHA</a>
+                    <a class="nav-link" href="Register_ReCAPTCHA.php" title="Register">Register</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="Login.php" title="Login">Login</a>

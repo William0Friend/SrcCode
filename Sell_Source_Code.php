@@ -2,7 +2,7 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-    
+
 session_start();
 
 if (!isset($_SESSION['loggedin'])) {
@@ -15,20 +15,16 @@ $username = "root";
 $password = "N0th1ng4u";
 $dbname = "srccode0";
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
-    
+
 if (mysqli_connect_errno()) {
     exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
 
-// $sql = "SELECT Questions.id, Questions.user_id, Questions.title, Questions.body, Questions.bounty, Questions.timestamp
-//         FROM Questions LEFT JOIN Answers ON Questions.id = Answers.question_id
-//         WHERE Answers.question_id IS NULL";
-//$sql = "SELECT * FROM Questions WHERE id NOT IN (SELECT DISTINCT question_id FROM Answers)";
-$sql = "SELECT Questions.id, Users.username, Questions.title, Questions.body, Questions.bounty, Questions.timestamp
+$sql = "SELECT Questions.id, Users.username, Questions.title, Questions.body, Bounties.bounty, Questions.timestamp
         FROM Questions
         LEFT JOIN Users ON Questions.user_id = Users.id
+        LEFT JOIN Bounties ON Questions.bounty_id = Bounties.id
         WHERE Questions.id NOT IN (SELECT DISTINCT question_id FROM Answers)";
 $result = $conn->query($sql);
 
@@ -39,12 +35,11 @@ if (!$result) {
 if ($result->num_rows > 0) {
     $table_data = "";
     while($row = $result->fetch_assoc()) {
-        // Sanitize output data
         $id = htmlspecialchars($row["id"]);
         $username = htmlspecialchars($row["username"]);
         $title = htmlspecialchars($row["title"]);
         $body = htmlspecialchars($row["body"]);
-        $bounty = htmlspecialchars($row["bounty"]);
+        $bounty = htmlspecialchars($row["bounty"]);  // Now, this represents bounty fetched from Bounties table
         $timestamp = htmlspecialchars($row["timestamp"]);
         
         $table_data .= "<tr><td>" . $username. "</td><td>" . $title. "</td><td>" . $body. "</td><td>" . $bounty. "</td><td>" . $timestamp. "</td></tr>";
@@ -55,6 +50,9 @@ if ($result->num_rows > 0) {
 
 $conn->close();
 ?>
+
+<!-- The rest of your HTML/JavaScript code remains the same... -->
+
 
 <!-- sell_source_code.php -->
 <!DOCTYPE html>
@@ -81,9 +79,9 @@ $conn->close();
                     <a class="nav-link" aria-current="page" href="index.html">Home</a>
                 </li>
                 <?php if (!isset($_SESSION["loggedin"])): ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="Register.php" title="Register">Register</a>
-                </li>
+<!--                 <li class="nav-item"> -->
+<!--                     <a class="nav-link" href="Register.php" title="Register">Register</a> -->
+<!--                 </li> -->
                 <li class="nav-item">
                 	<a class="nav-link" href="Register_ReCAPTCHA.php" title="Register">Register_ReCAPTCHA</a>
                 </li>
@@ -157,7 +155,7 @@ $conn->close();
 
             // Send the source code to the server
             $.ajax({
-                url: 'sell_source_code.php',
+                url: 'sell_source_code_action.php',
                 type: 'POST',
                 data: formData,
                 processData: false,
@@ -165,6 +163,8 @@ $conn->close();
                 success: function(response) {
                     if (response.success) {
                         alert("Source code uploaded successfully.");
+                        window.location.href = 'User.php'; // Redirect to the user page
+                        
                     } else {
                         alert("Failed to upload source code.");
                     }

@@ -32,11 +32,11 @@ if (!isset($_SESSION['loggedin'])) {
                     <a class="nav-link" aria-current="page" href="index.php">Home</a>
                 </li>
                                 <?php if (!isset($_SESSION["loggedin"])): ?>
+<!--                 <li class="nav-item"> -->
+<!--                     <a class="nav-link" href="Register.php" title="Register">Register</a> -->
+<!--                 </li> -->
                 <li class="nav-item">
-                    <a class="nav-link" href="Register.php" title="Register">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="Register_ReCAPTCHA.php" title="Register">Register_ReCAPTCHA</a>
+                    <a class="nav-link" href="Register_ReCAPTCHA.php" title="Register">Register</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="Login.php" title="Login">Login</a>
@@ -88,24 +88,45 @@ if (!isset($_SESSION['loggedin'])) {
     </form>
 </div>
     <script>
-        // Handle the question form submission
-        $("#questionForm").submit(function(e) {
-            e.preventDefault();
+//         // Handle the question form submission
+//         $("#questionForm").submit(function(e) {
+//             e.preventDefault();
         
-            const title = $("#title").val();
-            const body = $("#body").val();
-            const bounty = $("#bounty").val();
-        
-            // Send the question and bounty to the server
-            $.post("post_question.php", { title, body, bounty }, function(response) {
-                if (response.success) {
-                    alert("Question posted successfully.");
-                    window.location.href = 'User.php'; // Redirect to the user page
-                } else {
-                    alert("Failed to post question.");
-                }
-            }, "json");
-        });
+//         const formData = {
+//             const title = $("#title").val();
+//             const body = $("#body").val();
+//             const bounty = $("#bounty").val();
+//         }
+//             // Send the question and bounty to the server
+//             $.post("post_question.php", formData, function(response) {
+//                 if (response.success) {
+//                     alert("Question posted successfully.");
+//                     window.location.href = 'User.php'; // Redirect to the user page
+//                 } else {
+//                     alert("Failed to post question.");
+//                 }
+//             }, "json");
+//         });
+    // Handle the question form submission
+    $("#questionForm").submit(function(e) {
+        e.preventDefault();
+    
+    const formData = {
+        title: $("#title").val(),
+        body: $("#body").val(),
+        bounty: $("#bounty").val(),
+    }
+
+        // Send the question and bounty to the server
+        $.post("post_question.php", formData, function(response) {
+            if (response.success) {
+                alert("Question posted successfully.");
+                window.location.href = 'User.php'; // Redirect to the user page
+            } else {
+                alert("Failed to post question.");
+            }
+        }, "json");
+    });
     </script>
     </main>
     

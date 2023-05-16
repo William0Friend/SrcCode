@@ -1,0 +1,5 @@
+//for dark mode
+body.dark-mode {
+    background-color: black;
+    color: white;
+}

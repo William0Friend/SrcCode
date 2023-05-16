@@ -1,10 +1,37 @@
+
 <?php
 session_start();
+
+require 'db_connection.php'; // include the database connection
 
 if (!isset($_SESSION['loggedin'])) {
      header('Location: Login.php');
      exit;
  }
+ 
+ 
+ // Fetch logged-in user data
+$userQuery = $conn->prepare('SELECT * FROM Users WHERE id = ?'); // Assuming 'Users' is your users table and 'id' is the column name
+$userQuery->bind_param('i', $_SESSION['id']);
+$userQuery->execute();
+$userResult = $userQuery->get_result();
+$user = $userResult->fetch_assoc();
+
+// Fetch user's questions
+$query = $conn->prepare('SELECT * FROM Questions WHERE user_id = ?');
+$query->bind_param('i', $_SESSION['id']);
+$query->execute();
+$result = $query->get_result();
+$questions = $result->fetch_all(MYSQLI_ASSOC);
+
+// Fetch user's answers
+$query = $conn->prepare('SELECT * FROM Answers WHERE user_id = ?');
+$query->bind_param('i', $_SESSION['id']);
+$query->execute();
+$result = $query->get_result();
+$answers = $result->fetch_all(MYSQLI_ASSOC);
+
+// Rest of your HTML and PHP code
 ?>
 
 <!-- userpage.php -->
@@ -30,11 +57,11 @@ if (!isset($_SESSION['loggedin'])) {
                     <a class="nav-link" aria-current="page" href="index.html">Home</a>
                 </li>
                 <?php if (!isset($_SESSION["loggedin"])): ?>
+<!--                 <li class="nav-item"> -->
+<!--                     <a class="nav-link" href="Register.php" title="Register">Register</a> -->
+<!--                 </li> -->
                 <li class="nav-item">
-                    <a class="nav-link" href="Register.php" title="Register">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="Register_ReCAPTCHA.php" title="Register">Register_ReCAPTCHA</a>
+                    <a class="nav-link" href="Register_ReCAPTCHA.php" title="Register">Register</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="Login.php" title="Login">Login</a>
@@ -83,21 +110,47 @@ if (!isset($_SESSION['loggedin'])) {
             </div>
         </div>
     
-        <div class="col-md-8">
+        
+       
+       
+       <!-- In the My Questions section -->
+<div class="card">
+    <div class="card-header">My Questions</div>
+    <div class="card-body">
+        <?php foreach ($questions as $question): ?>
+            <div class="mb-3">
+                <h5><?= htmlspecialchars($question['title']) ?></h5>
+                <p><?= htmlspecialchars($question['body']) ?></p>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+
+<!-- In the My Answers section -->
+<div class="card">
+    <div class="card-header">My Answers</div>
+    <div class="card-body">
+        <?php foreach ($answers as $answer): ?>
+            <div class="mb-3">
+                <h5>Question: <?= htmlspecialchars($answer['question_id']) ?></h5> <!-- Display question ID or title if available -->
+                <p>Answer: <?= htmlspecialchars($answer['body']) ?></p>
+                <pre><code><?= htmlspecialchars($answer['file']) ?></code></pre>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+
+<div class="col-md-8">
             <div class="card">
-                <div class="card-header">My Questions</div>
+                <div class="card-header">Logout</div>
                 <div class="card-body">
-                    <?php foreach ($questions as $question): ?>
                         <div class="mb-3">
-                            <h5><?= htmlspecialchars($question['title']) ?></h5>
-                            <p><?= htmlspecialchars($question['body']) ?></p>
+   						 <p><a href="logout.php">Logout</a></p>
                         </div>
-                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
-       
-    <p><a href="logout.php">Logout</a></p>
+
     
     </div>
 </main>
