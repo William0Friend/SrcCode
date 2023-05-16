@@ -148,30 +148,49 @@ $conn->close();
 </div>
     
     <script>
-        // Handle the source code form submission
-        $("#sourceCodeForm").submit(function(e) {
-            e.preventDefault();
+//         // Handle the source code form submission
+//         $("#sourceCodeForm").submit(function(e) {
+//             e.preventDefault();
 
-            const formData = new FormData(this);
+//             const formData = new FormData(this);
 
-            // Send the source code to the server
-            $.ajax({
-                url: 'sell_source_code_action.php',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    if (response.success) {
-                        alert("Source code uploaded successfully.");
-                        window.location.href = 'User.php'; // Redirect to the user page
+//             // Send the source code to the server
+//             $.ajax({
+//                 url: 'sell_source_code_action.php',
+//                 type: 'POST',
+//                 data: formData,
+//                 processData: false,
+//                 contentType: false,
+//                 success: function(response) {
+//                     if (response.success) {
+//                         alert("Source code uploaded successfully.");
+//                         window.location.href = 'User.php'; // Redirect to the user page
                         
-                    } else {
-                        alert("Failed to upload source code.");
-                    }
-                }
-            });
-        });
+//                     } else {
+//                         alert("Failed to upload source code.");
+//                     }
+//                 }
+//             });
+//         });
+$.ajax({
+    url: 'sell_source_code_action.php',
+    type: 'POST',
+    data: formData,
+    processData: false,
+    contentType: false,
+    dataType: 'json', // Add this line
+    success: function(response) {
+        if (response.success) {
+            alert("Source code uploaded successfully.");
+            window.location.href = 'User.php'; // Redirect to the user page
+        } else {
+            alert("Failed to upload source code. Reason: " + response.message);
+        }
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        console.error("AJAX error: " + textStatus + ', ' + errorThrown);
+    }
+});
     </script>
     
      <div class="container">
