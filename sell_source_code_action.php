@@ -58,3 +58,6 @@ if ($success === false) {
 }
 
  echo json_encode(['success' => $success]);
+ header("Location: Sell_Source_Code.php"); // Redirect user to Users.php
+ 
+ 

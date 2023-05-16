@@ -39,7 +39,7 @@ if ($result->num_rows > 0) {
         $username = htmlspecialchars($row["username"]);
         $title = htmlspecialchars($row["title"]);
         $body = htmlspecialchars($row["body"]);
-        $bounty = htmlspecialchars($row["bounty"]);  // Now, this represents bounty fetched from Bounties table
+        $bounty = htmlspecialchars($row["amount"]);  // Now, this represents bounty fetched from Bounties table
         $timestamp = htmlspecialchars($row["timestamp"]);
         
         $table_data .= "<tr><td>" . $username. "</td><td>" . $title. "</td><td>" . $body. "</td><td>" . $bounty. "</td><td>" . $timestamp. "</td></tr>";
@@ -120,7 +120,7 @@ $conn->close();
 <!--     </form> -->
 <div class="container">
 <h2>Submit Answers</h2>
-<form id="sourceCodeForm" enctype="multipart/form-data">
+<form id="sourceCodeForm" enctype="multipart/form-data" method="POST" action="sell_source_code_action.php">
     <div class="mb-3"> 
         <input type="text" id="questionTitle" name="questionTitle" placeholder="Question Title">
     </div>
@@ -128,7 +128,7 @@ $conn->close();
         <input type="text" id="body" name="body" placeholder="Answer Body">
     </div>
     <div class="mb-3"> 
-        <input type="file" id="sourceCode" name="sourceCode" accept=".c,.cpp,.java,.js,.py,.rb,.cs,.php,.html,.css">
+        <input type="file" id="sourceCode" name="sourceCode" accept=".c,.cpp,.java,.js,.py,.rb,.cs,.php,.html,.css,.zip">
     </div>
     <div class="mb-3"> 
         <input type="text" id="filePath" name="filePath" placeholder="File Path">
@@ -148,7 +148,7 @@ $conn->close();
 </div>
     
     <script>
-//         // Handle the source code form submission
+        // Handle the source code form submission
 //         $("#sourceCodeForm").submit(function(e) {
 //             e.preventDefault();
 
@@ -172,25 +172,25 @@ $conn->close();
 //                 }
 //             });
 //         });
-$.ajax({
-    url: 'sell_source_code_action.php',
-    type: 'POST',
-    data: formData,
-    processData: false,
-    contentType: false,
-    dataType: 'json', // Add this line
-    success: function(response) {
-        if (response.success) {
-            alert("Source code uploaded successfully.");
-            window.location.href = 'User.php'; // Redirect to the user page
-        } else {
-            alert("Failed to upload source code. Reason: " + response.message);
-        }
-    },
-    error: function(jqXHR, textStatus, errorThrown) {
-        console.error("AJAX error: " + textStatus + ', ' + errorThrown);
-    }
-});
+// $.ajax({
+//     url: 'sell_source_code_action.php',
+//     type: 'POST',
+//     data: formData,
+//     processData: false,
+//     contentType: false,
+//     dataType: 'json', // Add this line
+//     success: function(response) {
+//         if (response.success) {
+//             alert("Source code uploaded successfully.");
+//             window.location.href = 'User.php'; // Redirect to the user page
+//         } else {
+//             alert("Failed to upload source code. Reason: " + response.message);
+//         }
+//     },
+//     error: function(jqXHR, textStatus, errorThrown) {
+//         console.error("AJAX error: " + textStatus + ', ' + errorThrown);
+//     }
+// });
     </script>
     
      <div class="container">

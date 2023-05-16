@@ -15,7 +15,8 @@ $userQuery = $conn->prepare('SELECT * FROM Users WHERE id = ?');
 $userQuery->bind_param('i', $_SESSION['id']);
 $userQuery->execute();
 $userResult = $userQuery->get_result();
-$user = $userResult->fetch_assoc();
+//$user = $userResult->fetch_assoc();
+$user = $userResult->fetch_all(MYSQLI_ASSOC);
 
 // Fetch user's questions
 $query = $conn->prepare('SELECT * FROM Questions WHERE user_id = ?');
