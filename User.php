@@ -11,7 +11,7 @@ if (!isset($_SESSION['loggedin'])) {
  
  
  // Fetch logged-in user data
-$userQuery = $conn->prepare('SELECT * FROM Users WHERE id = ?'); // Assuming 'Users' is your users table and 'id' is the column name
+$userQuery = $conn->prepare('SELECT * FROM Users WHERE id = ?'); 
 $userQuery->bind_param('i', $_SESSION['id']);
 $userQuery->execute();
 $userResult = $userQuery->get_result();

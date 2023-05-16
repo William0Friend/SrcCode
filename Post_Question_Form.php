@@ -88,25 +88,55 @@ if (!isset($_SESSION['loggedin'])) {
     </form>
 </div>
     <script>
+//     // Handle the question form submission
+//     $("#questionForm").submit(function(e) {
+//         e.preventDefault();
+    
+//     const formData = {
+//         title: $("#title").val(),
+//         body: $("#body").val(),
+//         bounty: $("#bounty").val(),
+//     }
+
+//         // Send the question and bounty to the server
+//         $.post("post_question.php", formData, function(response) {
+//             if (response.success) {
+//                 alert("Question posted successfully.");
+//                 window.location.href = 'User.php'; // Redirect to the user page
+//             } else {
+//                 alert("Failed to post question.");
+//             }
+//         }, "json");
+//     });
     // Handle the question form submission
     $("#questionForm").submit(function(e) {
         e.preventDefault();
     
-    const formData = {
-        title: $("#title").val(),
-        body: $("#body").val(),
-        bounty: $("#bounty").val(),
-    }
+        const formData = new FormData();
+        formData.append("title", $("#title").val());
+        formData.append("body", $("#body").val());
+        formData.append("bounty", $("#bounty").val());
 
         // Send the question and bounty to the server
-        $.post("post_question.php", formData, function(response) {
-            if (response.success) {
-                alert("Question posted successfully.");
-                window.location.href = 'User.php'; // Redirect to the user page
-            } else {
-                alert("Failed to post question.");
+        $.ajax({
+            url: 'post_question.php',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json', // Add this line
+            success: function(response) {
+                if (response.success) {
+                    alert("Question posted successfully.");
+                    window.location.href = 'User.php'; // Redirect to the user page
+                } else {
+                    alert("Failed to post question. Reason: " + response.message);
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error("AJAX error: " + textStatus + ', ' + errorThrown);
             }
-        }, "json");
+        });
     });
     </script>
     </main>
