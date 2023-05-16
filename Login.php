@@ -1,6 +1,6 @@
 <?php
 # Initialize session
- session_start();
+     session_start();
 
 # Check if user is already logged in, If yes then redirect him to User page
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
