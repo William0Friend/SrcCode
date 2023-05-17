@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 
- ini_set('display_errors', 1);
+ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
@@ -43,6 +43,7 @@ if ($s) {
     $stmt->execute();
     
     echo json_encode(['success' => true, 'message' => 'Question posted successfully.']);
+    header("Location: Post_Question_Form.php"); // Redirect user to same page, to clean out the form
 } else {
     echo json_encode(['success' => false, 'message' => 'Failed to post question. Error: '.$conn->error]);
 }

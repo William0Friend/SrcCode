@@ -98,13 +98,18 @@ $answers = $result->fetch_all(MYSQLI_ASSOC);
         
         
 <main class="container mt-5">
-<h2>Welcome to User Page, <?=$_SESSION['name']?>!</h2>
+<h2>Welcome to User Page, <?=$_SESSION['username']?>!</h2>
     
     <div class="row">
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body text-center">
                     <img src="https://via.placeholder.com/150" class="img-thumbnail rounded-circle mb-3" alt="User avatar">
+                    <form action="upload_image_action.php" method="post" enctype="multipart/form-data">
+                       Update Your Profile Picture:
+                      <input type="file" name="fileToUpload" id="fileToUpload">
+                      <input type="submit" value="Upload Image" name="submit">
+               		</form>
                     <h5><?= htmlspecialchars($user['username']) ?></h5>
                     <p class="mb-0">Reputation: <?= $user['reputation'] ?></p>
                 </div>

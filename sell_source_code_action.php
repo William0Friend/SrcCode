@@ -1,4 +1,6 @@
 <?php
+header('Content-Type: application/json');
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -28,6 +30,7 @@ if (!isset($_POST['questionTitle']) || !isset($_POST['body']) || !isset($_POST['
     exit;
 }
 
+//if it was povided move on
 $questionTitle = $_POST['questionTitle'];
 $body = $_POST['body'];
 $filePath = $_POST['filePath'];
@@ -58,6 +61,9 @@ if ($success === false) {
 }
 
  echo json_encode(['success' => $success]);
- header("Location: Sell_Source_Code.php"); // Redirect user to Users.php
+ header("Location: Sell_Source_Code.php"); // Redirect user to same page, to clean out the form
+ 
+ $stmt->close();
+ $conn->close();
  
  
