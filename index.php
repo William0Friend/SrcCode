@@ -1,6 +1,6 @@
 <?php
 # Initialize session
-session_start();
+    session_start();
 
 ?>
 <!doctype html>
@@ -58,6 +58,9 @@ session_start();
                 <?php endif; ?>
                 <li class="nav-item">
                     <a class="nav-link" href="AboutUs.php" title="Register">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Browse_Questions.php" title="Browse">Browse Questions</a>
                 </li>
             </ul>
         </div>

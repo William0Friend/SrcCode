@@ -1,12 +1,35 @@
 <?php
 session_start();
 
+require 'db_connection.php'; // include the database connection
+
 if (!isset($_SESSION['loggedin'])) {
      header('Location: Login.php');
      exit;
  }
-?>
+ 
+ 
+//Difficulties
+$difficulties = array("easy","medium","hard", "not provided");
+$difficultiesCount = count($difficulties);
+//Levels
+$difficultyLevels = array(1,2,3,4,5,-1);
+$difficultyLevelsCount = count($difficultyLevels);
+//Fetch programmingLanguages
+$plQuery = $conn->prepare('SELECT (programming_language) FROM Programming_Language');
+$plQuery->execute();
+$plResult = $plQuery->get_result();
+$programmingLanguages = $plResult->fetch_all(MYSQLI_ASSOC);
+//Fetch tech catagories
+$tcQuery = $conn->prepare('SELECT (technology_catagory) FROM Technology_Catagory');
+$tcQuery->execute();
+$tcResult = $tcQuery->get_result();
+$technologyCatagories = $tcResult->fetch_all(MYSQLI_ASSOC);
 
+//urgency
+$questionUrgencies = array(1,2,3,4,5,6,7,8,9,10,-1);
+$questionUrgenciesCount = count($questionUrgencies);
+?>
 
 <!-- post_question.php -->
 <!DOCTYPE html>
@@ -58,6 +81,9 @@ if (!isset($_SESSION['loggedin'])) {
                 <li class="nav-item">
                     <a class="nav-link" href="AboutUs.php" title="Register">About</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Browse_Questions.php" title="Browse">Browse Questions</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -66,79 +92,104 @@ if (!isset($_SESSION['loggedin'])) {
     </header>
 
 <main>
+
+
 <div class="container">
         <h2 class="my-3">Question Form</h2>
         
 <form id="questionForm" method="POST" action="post_question_action.php">
+        <!-- Question Title  -->
         <div class="mb-3"> 
+        <h6> Question Title </h6>
         	<input type="text" id="title" name="title" placeholder="Title">
       	</div>
-      
+      	<!-- Question Body  -->
+      	 
         <div class="mb-3"> 
+        <h6> Question Body </h6>
         	<textarea id="body" name="body" placeholder="Question"></textarea>
      	</div>    
-      
-         <div class="mb-3"> 
+     	<!-- Question Bounty  -->
+     	 <div class="mb-3"> 
+        <h6> Question Bounty </h6>
         	<input type="number" id="bounty" name="bounty" min="0" placeholder="Bounty">
         </div>
-     
+        <!-- Difficulty -->
+<div class="mb-3"> 
+<h6> Difficulty </h6>     
+    <select name="difficultyID">
+        <?php
+            $i = 0;
+            while ($i < $difficultiesCount) {
+                echo "<option value='".$difficulties[$i]."'>".$difficulties[$i]."</option>";
+                $i++;
+            }
+        ?>
+    </select>
+</div>
+<!-- Difficulty Level-->
+<div class="mb-3">      
+    <h6> Difficulty Level </h6>
+    <select name="difficultyLevel">
+        <?php
+            $i = 0;
+            while ($i < $difficultyLevelsCount) {
+                echo "<option value='".$difficultyLevels[$i]."'>".$difficultyLevels[$i]."</option>";
+                $i++;
+            }
+        ?>
+    </select>
+</div>
+<!-- Programming Languages -->
+<div class="mb-3">      
+    <h6>Programming Languages</h6>
+    <select name="programmingLanguage">
+        <?php
+            foreach ($programmingLanguages as $programmingLanguage) {
+                echo "<option value='".$programmingLanguage['programming_language']."'>".$programmingLanguage['programming_language']."</option>";
+            }
+        ?>
+    </select>
+</div>
+
+<!-- Tech Catagory -->
+<div class="mb-3">
+<h6> Tech Catagory </h6>      
+    <select name="techCatagory">
+        <?php
+            foreach ($technologyCatagories as $technologyCatagory) {
+                echo "<option value='".$technologyCatagory['technology_catagory']."'>".$technologyCatagory['technology_catagory']."</option>";
+            }
+        ?>
+    </select>
+</div>
+
+<!-- Question Urgency -->
+<div class="mb-3">
+<h6> Question Urgency </h6>      
+    <select name="questionUrgency">
+        <?php
+            $i = 0;
+            while ($i < $questionUrgenciesCount) {
+                echo "<option value='".$questionUrgencies[$i]."'>".$questionUrgencies[$i]."</option>";
+                $i++;
+            }
+        ?>
+    </select>
+</div>
+
+        <!-- Question Notes  -->
+        <div class="mb-3"> 
+        <h6>  Question Notes </h6>
+        	<textarea id="notes" name="notes" placeholder="Notes, or anything else you think will be relevant..."></textarea>
+     	</div>    
+     	<!-- Post Question Button -->
      	<div class="mb-3"> 
         	<button type="submit">Post</button>
     	</div>
+    	
     </form>
 </div>
-    <script>
-//     // Handle the question form submission
-//     $("#questionForm").submit(function(e) {
-//         e.preventDefault();
-    
-//     const formData = {
-//         title: $("#title").val(),
-//         body: $("#body").val(),
-//         bounty: $("#bounty").val(),
-//     }
-
-//         // Send the question and bounty to the server
-//         $.post("post_question.php", formData, function(response) {
-//             if (response.success) {
-//                 alert("Question posted successfully.");
-//                 window.location.href = 'User.php'; // Redirect to the user page
-//             } else {
-//                 alert("Failed to post question.");
-//             }
-//         }, "json");
-//     });
-    // Handle the question form submission
-//     $("#questionForm").submit(function(e) {
-//         e.preventDefault();
-    
-//         const formData = new FormData();
-//         formData.append("title", $("#title").val());
-//         formData.append("body", $("#body").val());
-//         formData.append("bounty", $("#bounty").val());
-
-//         // Send the question and bounty to the server
-//         $.ajax({
-//             url: 'post_question.php',
-//             type: 'POST',
-//             data: formData,
-//             processData: false,
-//             contentType: false,
-//             dataType: 'json', // Add this line
-//             success: function(response) {
-//                 if (response.success) {
-//                     alert("Question posted successfully.");
-//                     window.location.href = 'User.php'; // Redirect to the user page
-//                 } else {
-//                     alert("Failed to post question. Reason: " + response.message);
-//                 }
-//             },
-//             error: function(jqXHR, textStatus, errorThrown) {
-//                 console.error("AJAX error: " + textStatus + ', ' + errorThrown);
-//             }
-//         });
-//     });
-    </script>
     </main>
     
     

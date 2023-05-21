@@ -59,6 +59,9 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
                 <li class="nav-item">
                     <a class="nav-link" href="AboutUs.php" title="Register">About</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Browse_Questions.php" title="Browse">Browse Questions</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -69,78 +72,46 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
 
   <main>  
 
-    <!--          <div class="container"> -->
-    <!--         <h2 class="my-3">Login Form</h2> -->
-            
-    <!--            <form id="loginForm" method="POST" action="login_action.php"> -->
-    <!--            <div class="mb-3">  -->
-    <!--             <label for="username">Username:</label> -->
-    <!--             <input type="text" class="form-control" id="username" name="username" required> -->
-    <!-- 			 </div> -->
-    			 
-    <!-- 			<div class="mb-3">  -->
-    <!--             <label for="password">Password:</label> -->
-    <!--             <input type="password" class="form-control" id="password" name="password" required> -->
-    <!-- 			 </div> -->
-    			 
-    <!--             <input type="submit" value="Login"> -->
-    <!--         </form> -->
 
-<!--  <div class="container"> -->
-<!--         <h2 class="my-3">Login Form</h2> -->
-<!--         <form id="loginForm" method="POST" action="login_action.php"> -->
-<!--            <div class="mb-3">  -->
-<!--             <label for="username">Username:</label> -->
-<!--             <input type="text" class="form-control" id="username" name="username" required> -->
-<!--            </div> -->
-<!--            <div class="mb-3">  -->
-<!--             <label for="password">Password:</label> -->
-<!--             <input type="password" class="form-control" id="password" name="password" required> -->
-<!--            </div> -->
-<!--            <input type="submit" value="Login"> -->
-<!--         </form> -->
-<!--     </div> -->
- <div class="container">
-        <h2 class="my-3">Login Form</h2>
-        <form id="loginForm" method="POST" action="login_action.php">
-            <?php if(isset($_GET['error'])): ?>
-                <div class="alert alert-danger">
-                    <?= htmlentities($_GET['error']) ?>
-                </div>
-            <?php endif; ?>
-            <div class="mb-3"> 
-                <label for="username">Username:</label>
-                <input type="text" class="form-control" id="username" name="username" required>
+<div class="container">
+    <h2 class="my-3">Login Form</h2>
+    <form id="loginForm" method="POST" action="login_action.php">
+        <?php if(isset($_GET['error'])): ?>
+            <div class="alert alert-danger">
+                <?= htmlentities($_GET['error']) ?>
             </div>
-            <div class="mb-3"> 
-                <label for="password">Password:</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <input type="submit" value="Login">
-        </form>
-    </div>
-
-    
+        <?php endif; ?>
+        <div class="mb-3">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="mb-3">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <input type="submit" value="Login">
+    </form>
+</div>
 
 <script>
-//     $("#loginForm").submit(function(e) {
-//         e.preventDefault();
+    document.getElementById("loginForm").addEventListener("submit", function(event){
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        
+        if(username == ""){
+            alert("Username cannot be empty");
+            event.preventDefault(); // Prevent form submission
+        }
+        
+        if(password == ""){
+            alert("Password cannot be empty");
+            event.preventDefault(); // Prevent form submission
+        }
 
-//         const formData = {
-//             username: $("#username").val(),
-//             password: $("#password").val()
-//         };
+        //TODO: use regex to narrom this down
+    });
+</script>    
 
-//         $.post("login_action.php", formData, function(response) {
-//             if (response.success) {
-//                 alert("Login successful!");
-//                 window.location.href = "User.php";
-//             } else {
-//                 alert(response.message);
-//             }
-//         }, "json");
-//     });
- </script> 
 
 </main>
 

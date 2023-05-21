@@ -54,7 +54,10 @@
                 </li>
                 <?php endif; ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="AboutUs.php" title="About Us">About</a>
+                    <a class="nav-link active" href="AboutUs.php" title="About Us">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Browse_Questions.php" title="About Us">Browse Questions</a>
                 </li>
             </ul>
         </div>
@@ -74,12 +77,12 @@
                 by providing an easy to use platform, to connect with
                 developers, engineers, scientists, and programmers. With $rcCode you can easily purpose your problem,
                 find your expert, hire, and carry your project through to production, inside the same app.
-                <ul>
-                    <li>All payments handled through stripe, square, or crypto.</li>
+            </p>
+             <ul>
+                    <li> All payments handled through stripe, square, or crypto.</li>
                     <li> All code hosted through github.</li>
                     <li> Both Public and Anonymous problem and solutions transactions are avalible.</li>
                 </ul>
-            </p>
             <button class="btn btn-primary btn-lg" type="button" title="I want to prepose a problem">Problems</button>
             <button class="btn btn-primary btn-lg" type="button" title="I want to prepose a solution">Solutions</button>
 

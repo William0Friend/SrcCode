@@ -8,13 +8,13 @@ if (!isset($_SESSION['loggedin'])) {
     exit;
 }
 
-$servername = "localhost";
-$username = "root";
-$password = "N0th1ng4u";
-$dbname = "srccode0";
+// $servername = "localhost";
+// $username = "root";
+// $password = "N0th1ng4u";
+// $dbname = "srccode0";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-
+// $conn = new mysqli($servername, $username, $password, $dbname);
+require 'db_connection.php';
 if (mysqli_connect_errno()) {
     exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
@@ -49,7 +49,6 @@ if ($result->num_rows > 0) {
 $conn->close();
 ?>
 
-<!-- The rest of your HTML/JavaScript code remains the same... -->
 
 
 <!-- sell_source_code.php -->
@@ -103,6 +102,9 @@ $conn->close();
                 <li class="nav-item">
                     <a class="nav-link" href="AboutUs.php" title="Register">About</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Browse_Questions.php" title="Browse">Browse Questions</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -111,26 +113,41 @@ $conn->close();
     </header>
 
 
-
-<!--     <form id="sourceCodeForm" enctype="multipart/form-data"> -->
-<!--         <input type="file" id="sourceCode" name="sourceCode" accept=".c,.cpp,.java,.js,.py,.rb,.cs,.php,.html,.css"> -->
+<!-- old and working answer form  -->
+<!-- <div class="container"> -->
+<!-- <h2>Submit Answers</h2> -->
+<!-- <form id="sourceCodeForm" enctype="multipart/form-data" method="POST" action="sell_source_code_action.php"> -->
+<!--     <div class="mb-3">  -->
+<!--         <input type="text" id="questionTitle" name="questionTitle" placeholder="Question Title"> -->
+<!--     </div> -->
+<!--     <div class="mb-3">  -->
+<!--         <input type="text" id="body" name="body" placeholder="Answer Body"> -->
+<!--     </div> -->
+<!--     <div class="mb-3">  -->
+<!--         <input type="file" id="sourceCode" name="sourceCode" accept=".c,.cpp,.java,.js,.py,.rb,.cs,.php,.html,.css,.zip"> -->
+<!--     </div> -->
+<!--     <div class="mb-3">  -->
+<!--         <input type="text" id="filePath" name="filePath" placeholder="File Path"> -->
+<!--     </div> -->
+<!--     <div class="mb-3">  -->
 <!--         <button type="submit">Sell</button> -->
-<!--     </form> -->
+<!--     </div> -->
+<!-- </form> -->
+<!-- </div> -->
+
+<!-- new answer form  -->
 <div class="container">
 <h2>Submit Answers</h2>
-<form id="sourceCodeForm" enctype="multipart/form-data" method="POST" action="sell_source_code_action.php">
+<form id="sourceCodeForm" enctype="multipart/form-data" method="POST" action="sell_source_code_action_2.php">
     <div class="mb-3"> 
         <input type="text" id="questionTitle" name="questionTitle" placeholder="Question Title">
     </div>
     <div class="mb-3"> 
-        <input type="text" id="body" name="body" placeholder="Answer Body">
+        <input type="text" id="body" name="body" placeholder="Notes on Answer">
     </div>
     <div class="mb-3"> 
-        <input type="file" id="sourceCode" name="sourceCode" accept=".c,.cpp,.java,.js,.py,.rb,.cs,.php,.html,.css,.zip">
-    </div>
-    <div class="mb-3"> 
-        <input type="text" id="filePath" name="filePath" placeholder="File Path">
-    </div>
+        	<textarea id="codeBody" name="codeBody" placeholder="Copy and Paste Your Answer"></textarea>
+     </div>    
     <div class="mb-3"> 
         <button type="submit">Sell</button>
     </div>
@@ -144,52 +161,6 @@ $conn->close();
         <?php echo $table_data; ?>
     </table>
 </div>
-    
-    <script>
-        // Handle the source code form submission
-//         $("#sourceCodeForm").submit(function(e) {
-//             e.preventDefault();
-
-//             const formData = new FormData(this);
-
-//             // Send the source code to the server
-//             $.ajax({
-//                 url: 'sell_source_code_action.php',
-//                 type: 'POST',
-//                 data: formData,
-//                 processData: false,
-//                 contentType: false,
-//                 success: function(response) {
-//                     if (response.success) {
-//                         alert("Source code uploaded successfully.");
-//                         window.location.href = 'User.php'; // Redirect to the user page
-                        
-//                     } else {
-//                         alert("Failed to upload source code.");
-//                     }
-//                 }
-//             });
-//         });
-// $.ajax({
-//     url: 'sell_source_code_action.php',
-//     type: 'POST',
-//     data: formData,
-//     processData: false,
-//     contentType: false,
-//     dataType: 'json', // Add this line
-//     success: function(response) {
-//         if (response.success) {
-//             alert("Source code uploaded successfully.");
-//             window.location.href = 'User.php'; // Redirect to the user page
-//         } else {
-//             alert("Failed to upload source code. Reason: " + response.message);
-//         }
-//     },
-//     error: function(jqXHR, textStatus, errorThrown) {
-//         console.error("AJAX error: " + textStatus + ', ' + errorThrown);
-//     }
-// });
-    </script>
     
      <div class="container">
         <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">

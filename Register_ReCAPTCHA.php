@@ -68,6 +68,9 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
                 <li class="nav-item">
                     <a class="nav-link" href="AboutUs.php" title="Register">About</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Browse_Questions.php" title="Browse">Browse Questions</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -77,79 +80,74 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
 
 
     <main>
-<!--     <div class="container"> -->
-<!--         <h2 class="my-3">Registration Form</h2> -->
-<!--         <form id="registrationForm"> -->
-<!--             <div class="mb-3"> -->
-<!--                 <label for="username" class="form-label">Username</label> -->
-<!--                 <input type="text" class="form-control" id="username" name="username" required> -->
-<!--             </div> -->
-<!--             <div class="mb-3"> -->
-<!--                 <label for="email" class="form-label">Email</label> -->
-<!--                 <input type="email" class="form-control" id="email" name="email" required> -->
-<!--             </div> -->
-<!--             <div class="mb-3"> -->
-<!--                 <label for="password" class="form-label">Password</label> -->
-<!--                 <input type="password" class="form-control" id="password" name="password" required> -->
-<!--             </div> -->
-<!--             <div class="mb-3"> -->
-<!--                 <label for="confirmPassword" class="form-label">Confirm Password</label> -->
-<!--                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required> -->
-<!--             </div> -->
-<!--             <div class="mb-3"> -->
-<!--                 <div class="g-recaptcha" data-sitekey="6LeX8QgmAAAAAOcNiIR33KEX93i3VpayxDWzBKzu"></div> -->
-<!--             </div> -->
-<!--             <button type="submit" class="btn btn-primary">Register</button> -->
-<!--         </form> -->
-<!--         <div id="message"></div> -->
-<!--     </div> -->
-<form id="registrationForm" action="register_recaptcha_action.php" method="post">
-    <div class="mb-3">
-        <label for="username" class="form-label">Username</label>
-        <input type="text" class="form-control" id="username" name="username" required>
-    </div>
-    <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" name="email" required>
-    </div>
-    <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" id="password" name="password" required>
-    </div>
-    <!-- Add reCAPTCHA -->
-    <div class="g-recaptcha" data-sitekey="6LeX8QgmAAAAAOcNiIR33KEX93i3VpayxDWzBKzu"></div>
-    <button type="submit" class="btn btn-primary">Register</button>
-</form>
+<div class="container">
+    <form id="registrationForm" action="register_recaptcha_action.php" method="post">
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <!-- Add reCAPTCHA -->
+        <div class="g-recaptcha" data-sitekey="6LeX8QgmAAAAAOcNiIR33KEX93i3VpayxDWzBKzu"></div>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+</div>
 
+<script>
+    document.getElementById("registrationForm").addEventListener("submit", function(event){
+        var username = document.getElementById("username").value;
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+        
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // email regex for validation
+		var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/; //password regex for validation
+        if(username == ""){
+            alert("Username cannot be empty");
+            event.preventDefault(); // Prevent form submission
+        }
+        
+        if(email == ""){
+            alert("Email cannot be empty");
+            event.preventDefault(); // Prevent form submission
+        } else if(!emailRegex.test(email)){
+            alert("Please enter a valid email");
+            event.preventDefault(); // Prevent form submission
+        }
 
-    <script>
-//     $("#registrationForm").submit(function(e) {
-//         e.preventDefault();
+        if(password == ""){
+            alert("Password cannot be empty");
+            event.preventDefault(); // Prevent form submission
+        }else if(password.length < 10 || password.length > 19){
+            alert("Password must be between 10 and 18 characters");
+            event.preventDefault(); // Prevent form submission
+        }else if(!passwordRegex.test(Password)){
+            alert("Please enter a valid password, a correct password has a minimum of 10 and maximum of 18 characters, at least one uppercase letter, one lowercase letter, one number and one special character.");
+            event.preventDefault(); // Prevent form submission
+        }
 
-//         const password = $("#password").val();
-//         const confirmPassword = $("#confirmPassword").val();
+/*         Minimum eight characters, at least one letter and one number:
 
-//         if (password !== confirmPassword) {
-//             alert("Passwords do not match.");
-//             return;
-//         }
+        	"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+        	Minimum eight characters, at least one letter, one number and one special character:
 
-//         const formData = {
-//             username: $("#username").val(),
-//             email: $("#email").val(),
-//             password: password,
-//             'g-recaptcha-response': grecaptcha.getResponse()
-//         };
-//         $.post("register_recaptcha_action.php", formData, function(response) {
-//             if (response.success) {
-//                 window.location.href = 'User.php';  
-//             } else {
-//                 // Display an error message
-//                 $('#message').html(response.message);
-//             }
-//         }, "json");
-//     });
-    
+        	"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
+        	Minimum eight characters, at least one uppercase letter, one lowercase letter and one number:
+
+        	"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
+        	Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character:
+
+        	"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+        	Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character:
+
+        	"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$" */
+    });
 </script>
 
 </main>
