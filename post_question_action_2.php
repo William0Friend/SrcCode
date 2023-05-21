@@ -1,4 +1,24 @@
 <?php
+header('Content-Type: application/json');
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+session_start();
+
+if (!isset($_SESSION['loggedin'])) {
+    header('Location: Login.php');
+    exit;
+}
+// Get the title, body, and bounty from the request
+//$title = htmlspecialchars($_POST['title']);
+//$body = htmlspecialchars($_POST['body']);
+//$bounty = htmlspecialchars($_POST['bounty']);
+
+// Get the user ID from the session
+$userId = $_SESSION['id'];
+
 require 'db_connection.php';
 
 if ($conn->connect_error) {
@@ -8,21 +28,20 @@ if ($conn->connect_error) {
 $conn->autocommit(FALSE);
 
 try {
-    
-    //Question Title, Body, and User_id into Questions tabel, 
+    // Get the user ID from the session
+    $userId = $_SESSION['id'];
+
+    //Question Title, Body, and User_id into Questions tabel,
     #Will -> maybe seperate out body and title later
     $stmt = $conn->prepare("INSERT INTO Questions (user_id, title, body) VALUES (?, ?, ?)");
-    $stmt->bind_param('iss', $_POST['user_id'], $_POST['title'], $_POST['body']);
+    $stmt->bind_param('iss', $userId, $_POST['title'], $_POST['body']);
     $stmt->execute();
     
     // Get the question ID from the previous statement
-    $questionId = $conn->insert_id;
-    // Get the user ID from the session
-    $userId = $_SESSION['id'];
-    
+    $questionId = $stmt->insert_id;
     //Difficulty
     $stmt = $conn->prepare("INSERT INTO Difficulty (question_id, difficulty) VALUES (?, ?)");
-    $stmt->bind_param('is', $questionId, $_POST['difficulty']);
+    $stmt->bind_param('is', $questionId, $_POST['difficultyID']);
     $stmt->execute();
     
     //Difficulty Level
@@ -41,7 +60,7 @@ try {
         $programmingLanguageId = $row['id'];
         
         // Insert into Question_Programming_Language
-        $stmt = $conn->prepare("INSERT INTO Question_Programming_Language (question_id, programming_language_id) VALUES (?, ?)");
+        $stmt = $conn->prepare("INSERT INTO Question_Programming_Languages (question_id, programming_languages_id) VALUES (?, ?)");
         $stmt->bind_param('ii', $questionId, $programmingLanguageId);
         $stmt->execute();
     }
@@ -87,6 +106,7 @@ try {
         $stmt->bind_param("ii", $bountyId, $questionId);
         $stmt->execute();
         
+        //We are done with form now
         echo json_encode(['success' => true, 'message' => 'Question posted successfully.']);
     } else {
         echo json_encode(['success' => false, 'message' => 'Failed to post question. Error: '.$conn->error]);

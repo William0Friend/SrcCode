@@ -97,7 +97,7 @@ $questionUrgenciesCount = count($questionUrgencies);
 <div class="container">
         <h2 class="my-3">Question Form</h2>
         
-<form id="questionForm" method="POST" action="post_question_action.php">
+<form id="questionForm" method="POST" action="post_question_action_2.php">
         <!-- Question Title  -->
         <div class="mb-3"> 
         <h6> Question Title </h6>

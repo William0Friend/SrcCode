@@ -29,6 +29,7 @@ $stmt->bind_param("iss", $userId, $title, $body);
 $stmt->execute();
 $questionId = $stmt->insert_id;
 
+
 // Insert the bounty into the Bounties table
 $sql = "INSERT INTO Bounties (user_id, question_id, amount) VALUES (?, ?, ?)";
 $stmt = $conn->prepare($sql);
