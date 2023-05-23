@@ -137,7 +137,7 @@ $conn->close();
 
 <!-- new answer form  -->
 <div class="container">
-<h2>Submit Answers</h2>
+<h2 class="text-center">Submit Answers</h2>
 <form id="sourceCodeForm" enctype="multipart/form-data" method="POST" action="sell_source_code_action_2.php">
     <div class="mb-3"> 
         <input type="text" id="questionTitle" name="questionTitle" placeholder="Question Title">
@@ -149,12 +149,12 @@ $conn->close();
         	<textarea id="codeBody" name="codeBody" placeholder="Copy and Paste Your Answer"></textarea>
      </div>    
     <div class="mb-3"> 
-        <button type="submit">Sell</button>
+        <button class="btn btn-primary" type="submit">Sell</button>
     </div>
 </form>
 </div>
  <!-- Unanswered questions table -->
- <h2>Unanswered Questions Table</h2>
+ <h2 class="text-center">Unanswered Questions Table</h2>
  <div class="container">
     <table class="table">
 		<tr><th>Username</th><th>Title</th><th>Body</th><th>Bounty</th><th>Timestamp</th></tr>

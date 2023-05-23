@@ -17,6 +17,9 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
     <!--Javascript-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script></head>
+	<!-- Client side validation -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+	
 </head>
 <body>
 
@@ -82,11 +85,11 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
             </div>
         <?php endif; ?>
         <div class="mb-3">
-            <label for="username">Username:</label>
+            <label for="username" class="fw-bold">Username:</label>
             <input type="text" class="form-control" id="username" name="username" required>
         </div>
         <div class="mb-3">
-            <label for="password">Password:</label>
+            <label for="password" class="fw-bold">Password:</label>
             <input type="password" class="form-control" id="password" name="password" required>
         </div>
         <input type="submit" value="Login">
@@ -94,24 +97,58 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
 </div>
 
 <script>
-    document.getElementById("loginForm").addEventListener("submit", function(event){
-        var username = document.getElementById("username").value;
-        var password = document.getElementById("password").value;
-        
-        if(username == ""){
-            alert("Username cannot be empty");
-            event.preventDefault(); // Prevent form submission
-        }
-        
-        if(password == ""){
-            alert("Password cannot be empty");
-            event.preventDefault(); // Prevent form submission
-        }
+// Javascript Validation
+// only problem with this is that it is sucky compaered to the jquery validate option,
+// since it uses alerts, but most people block popups.
 
-        //TODO: use regex to narrom this down
-    });
+//     document.getElementById("loginForm").addEventListener("submit", function(event){
+//         var username = document.getElementById("username").value;
+//         var password = document.getElementById("password").value;
+        
+//         if(username == ""){
+//             alert("Username cannot be empty");
+//             event.preventDefault(); // Prevent form submission
+//         }
+        
+//         if(password == ""){
+//             alert("Password cannot be empty");
+//             event.preventDefault(); // Prevent form submission
+//         }
+
+//         //TODO: use regex to narrom this down
+//     });
+
 </script>    
-
+<script>
+//jquery validation
+$(document).ready(function () {
+    $('#loginForm').validate({ 
+        rules: {
+            username: {
+                required: true,
+                minlength: 2
+            },
+            password: {
+                required: true,
+                minlength: 5
+            }
+        },
+        messages: {
+            username: {
+                required: "Please provide a username",
+                minlength: "Your username must be at least 2 characters long"
+            },
+            password: {
+                required: "Please provide a password",
+                minlength: "Your password must be at least 5 characters long"
+            }
+        },
+        submitHandler: function (form) {
+            form.submit();
+        }
+    });
+});
+</script>
 
 </main>
 

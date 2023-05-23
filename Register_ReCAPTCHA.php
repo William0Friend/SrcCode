@@ -21,9 +21,14 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
     <title>$rcCode</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <!--Javascript-->
+    <!-- bootstrap  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
-	    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+	<!-- recaptcha -->
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+	<!-- jquery validate -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 	
 </head>
 
@@ -83,71 +88,129 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
 <div class="container">
     <form id="registrationForm" action="register_recaptcha_action.php" method="post">
         <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
+            <label for="username" class="form-label fw-bold">Username</label>
             <input type="text" class="form-control" id="username" name="username" required>
         </div>
         <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
+            <label for="email" class="form-label fw-bold">Email</label>
             <input type="email" class="form-control" id="email" name="email" required>
         </div>
         <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
+            <label for="password" class="form-label fw-bold">Password</label>
             <input type="password" class="form-control" id="password" name="password" required>
         </div>
-        <!-- Add reCAPTCHA -->
-        <div class="g-recaptcha" data-sitekey="6LeX8QgmAAAAAOcNiIR33KEX93i3VpayxDWzBKzu"></div>
-        <button type="submit" class="btn btn-primary">Register</button>
-    </form>
+        <div class="mb-3">
+            <label for="confirm_password" class="form-label fw-bold">Confirm Password</label>
+            <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+        </div>
+                <!-- Add reCAPTCHA -->
+                <div class="g-recaptcha" data-sitekey="6LeX8QgmAAAAAOcNiIR33KEX93i3VpayxDWzBKzu"></div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
 </div>
 
 <script>
-    document.getElementById("registrationForm").addEventListener("submit", function(event){
-        var username = document.getElementById("username").value;
-        var email = document.getElementById("email").value;
-        var password = document.getElementById("password").value;
+//     document.getElementById("registrationForm").addEventListener("submit", function(event){
+//         var username = document.getElementById("username").value;
+//         var email = document.getElementById("email").value;
+//         var password = document.getElementById("password").value;
+//         var confirm_password = document.getElementById("confirm_password").value;
         
-        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // email regex for validation
-		var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/; //password regex for validation
-        if(username == ""){
-            alert("Username cannot be empty");
-            event.preventDefault(); // Prevent form submission
-        }
+//         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // email regex for validation
+// 		var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/; //password regex for validation
+//         if(username == ""){
+//             alert("Username cannot be empty");
+//             event.preventDefault(); // Prevent form submission
+//         }
         
-        if(email == ""){
-            alert("Email cannot be empty");
-            event.preventDefault(); // Prevent form submission
-        } else if(!emailRegex.test(email)){
-            alert("Please enter a valid email");
-            event.preventDefault(); // Prevent form submission
+//         if(email == ""){
+//             alert("Email cannot be empty");
+//             event.preventDefault(); // Prevent form submission
+//         } else if(!emailRegex.test(email)){
+//             alert("Please enter a valid email");
+//             event.preventDefault(); // Prevent form submission
+//         }
+
+//         if(password == ""){
+//             alert("Password cannot be empty");
+//             event.preventDefault(); // Prevent form submission
+//         }else if(password.length < 10 || password.length > 19){
+//             alert("Password must be between 10 and 18 characters");
+//             event.preventDefault(); // Prevent form submission
+//         }else if(!passwordRegex.test(Password)){
+//             alert("Please enter a valid password, a correct password has a minimum of 10 and maximum of 18 characters, at least one uppercase letter, one lowercase letter, one number and one special character.");
+//             event.preventDefault(); // Prevent form submission
+//         }
+
+//         if(password != confirm_password){
+//             alert("Passwords do not match");
+//             event.preventDefault(); // Prevent form submission
+//         }
+
+// /*         Minimum eight characters, at least one letter and one number:
+
+//         	"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+//         	Minimum eight characters, at least one letter, one number and one special character:
+
+//         	"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
+//         	Minimum eight characters, at least one uppercase letter, one lowercase letter and one number:
+
+//         	"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
+//         	Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character:
+
+//         	"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+//         	Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character:
+
+//         	"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$" */
+//     });
+</script>
+
+<script>
+$(document).ready(function() {
+    $("#registrationForm").validate({
+        rules: {
+            username: {
+                required: true
+            },
+            email: {
+                required: true,
+                email: true
+            },
+            password: {
+                required: true,
+                minlength: 10,
+                maxlength: 18,
+                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/
+            },
+            confirm_password: {
+                required: true,
+                equalTo: "#password"
+            }
+        },
+        messages: {
+            username: {
+                required: "Username cannot be empty"
+            },
+            email: {
+                required: "Email cannot be empty",
+                email: "Please enter a valid email"
+            },
+            password: {
+                required: "Password cannot be empty",
+                minlength: "Password must be between 10 and 18 characters",
+                maxlength: "Password must be between 10 and 18 characters",
+                pattern: "Please enter a valid password, a correct password has a minimum of 10 and maximum of 18 characters, at least one uppercase letter, one lowercase letter, one number and one special character."
+            },
+            confirm_password: {
+                required: "Please confirm your password",
+                equalTo: "Passwords do not match"
+            }
+        },
+        submitHandler: function(form) {
+            form.submit();
         }
-
-        if(password == ""){
-            alert("Password cannot be empty");
-            event.preventDefault(); // Prevent form submission
-        }else if(password.length < 10 || password.length > 19){
-            alert("Password must be between 10 and 18 characters");
-            event.preventDefault(); // Prevent form submission
-        }else if(!passwordRegex.test(Password)){
-            alert("Please enter a valid password, a correct password has a minimum of 10 and maximum of 18 characters, at least one uppercase letter, one lowercase letter, one number and one special character.");
-            event.preventDefault(); // Prevent form submission
-        }
-
-/*         Minimum eight characters, at least one letter and one number:
-
-        	"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
-        	Minimum eight characters, at least one letter, one number and one special character:
-
-        	"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
-        	Minimum eight characters, at least one uppercase letter, one lowercase letter and one number:
-
-        	"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
-        	Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character:
-
-        	"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
-        	Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character:
-
-        	"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$" */
     });
+});
 </script>
 
 </main>

@@ -1,27 +1,27 @@
-
 <?php
 session_start();
 
 require 'db_connection.php'; // include the database connection
 
 if (!isset($_SESSION['loggedin'])) {
-     header('Location: Login.php');
-     exit;
- }
- 
- // Fetch logged-in user data
+    header('Location: Login.php');
+    exit;
+}
+
+// Fetch logged-in user data
 $userQuery = $conn->prepare('SELECT * FROM Users WHERE id = ?'); 
 $userQuery->bind_param('i', $_SESSION['id']);
 $userQuery->execute();
 $userResult = $userQuery->get_result();
-//$user = $userResult->fetch_assoc();
-$user = $userResult->fetch_all(MYSQLI_ASSOC);
+//get this single user
+$user = $userResult->fetch_assoc();
 
 // Fetch user's questions
 $query = $conn->prepare('SELECT * FROM Questions WHERE user_id = ?');
 $query->bind_param('i', $_SESSION['id']);
 $query->execute();
 $result = $query->get_result();
+// get all the questions
 $questions = $result->fetch_all(MYSQLI_ASSOC);
 
 // Fetch user's answers
@@ -29,6 +29,7 @@ $query = $conn->prepare('SELECT * FROM Answers WHERE user_id = ?');
 $query->bind_param('i', $_SESSION['id']);
 $query->execute();
 $result = $query->get_result();
+//get all the answers
 $answers = $result->fetch_all(MYSQLI_ASSOC);
 
 ?>
@@ -39,13 +40,16 @@ $answers = $result->fetch_all(MYSQLI_ASSOC);
 <head>
     <title>User Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <!--Javascript-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script></head>
-	<!-- Bootstrap Select -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
-	
+    <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <!-- Bootstrap Select -->
+<!--     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css"> -->
+<!--     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script> -->
+    <!-- Accordian -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	    
 </head>
 <body>
 <header>
@@ -74,7 +78,7 @@ $answers = $result->fetch_all(MYSQLI_ASSOC);
                 
                 <!-- pages only avaalile to the user -->
                 <?php if (isset($_SESSION["loggedin"])): ?>
-                <li class="nav-item">
+                 <li class="nav-item">
                     <a class="nav-link active" href="User.php" title="User">User</a>
                 </li>
                 
@@ -94,76 +98,124 @@ $answers = $result->fetch_all(MYSQLI_ASSOC);
             </ul>
         </div>
     </div>
+    
+    
 </nav>
 
     </header>
 
-    <?php
+<aside>
+<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="sidebarLabel">User Sidebar</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div>
+      <!-- Add the content for your sidebar here. This can be navigation links, etc. -->
+    </div>
+  </div>
+</div>
+
+<script>
+
+	document.addEventListener("DOMContentLoaded", function(){
+	  var offcanvasElementList = [].slice.call(document.querySelectorAll('.offcanvas'))
+	  var offcanvasList = offcanvasElementList.map(function (offcanvasEl) {
+	    return new bootstrap.Offcanvas(offcanvasEl)
+	  })
+	});</script>
+</aside>
 
 
-// Get images from the database
-$query = $conn->query("SELECT * FROM images ORDER BY uploaded_on DESC");
-/* Get the number of rows in the result set */
-$row_cnt = mysqli_num_rows($query);
-//display all
-//if($query->num_rows > 0){
-if($query->num_rows > 0){
-    while($row = $query->fetch_assoc()){
-        $imageURL = 'uploads/'.$row["file_name"];
+<?php
+// Get the most recent image from the database
+$userId = $_SESSION['id'];
+$query = $conn->prepare("SELECT * FROM images WHERE user_id = ? ORDER BY uploaded_on DESC LIMIT 1");
+$query->bind_param('i', $userId);
+$query->execute();
+$result = $query->get_result();
+// get the most recent image
+$image = $result->fetch_assoc();
+
+if($image){
+    $imageURL = '../uploads/'.$image["file_name"];
+} else {
+    $imageURL = ''; // default image url or leave it empty
+}
 ?>
 
-
 <main class="container mt-5">
-<h2>Welcome to User Page, <?=$_SESSION['username']?>!</h2>
-    
+    <h2>Welcome to User Page, <?=$_SESSION['username']?>!</h2>
     <div class="row">
         <div class="col-md-4">
             <div class="card">
-                <div class="card-body text-center">
-                     <img src="<?php echo $imageURL; ?>" class="img-thumbnail rounded-circle mb-3" alt="User avatar">                       
-                        <?php }
-                                }else{ ?>
-                                    <p>No image(s) found...</p>
-                                <?php } ?>
-        
-<!--                     <form action="upload_image_action.php" method="post" enctype="multipart/form-data"> -->
-<!--                        Update Your Profile Picture: -->
-<!--                       <input type="file" name="fileToUpload" id="fileToUpload"> -->
-<!--                       <input type="submit" value="Upload Image" name="submit"> -->
-<!--                		</form> -->
-               		<form action="upload_user_image.php" method="post" enctype="multipart/form-data">
+                
+            <div class="card-body text-center">
+                <?php if ($imageURL): ?>
+                    <img src="<?php echo $imageURL; ?>" class="img-thumbnail rounded-circle mb-3" alt="User avatar">
+                <?php else: ?>
+                    <p>No image(s) found...</p>
+                <?php endif; ?>
+            </div>
+            <!-- user sidebar toggle -->
+			    <button class="btn btn-primary me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">Toggle Sidebar</button>
+			
+               		<form action="upload_user_image_2.php" method="post" enctype="multipart/form-data">
                         Select Image File to Upload for your Profile Picture:
                         <input type="file" name="file">
                         <input type="submit" name="submit" value="Upload">
                     </form>
                     
+<!--                 
                     
+<!--  <form enctype="multipart/form-data" method="post" action="http://httpbin.org/post"> -->
+<!--             <label for="file-input">Select an image file</label> -->
+<!--             <input accept="image/*" id="file-input" name="image" type="file"> -->
+<!--             <label for="file-selection-preview-image">Selected image</label> -->
+            <!--  <img id="file-selection-preview-image"> --><!-- this element will display selected image. -->
+<!--             <input type="submit"> -->
+             <script> 
+//                 const form = document.currentScript.parentElement, file_input = form.elements.image;
+//                 file_input.addEventListener("change", function(ev) { /// Whenever the selection changes
+//                     const files = ev.target.files;
+//                     console.assert(files.length == 1); /// Assert that there is only one file selected
+//                     console.assert(files[0].type.startsWith("image/")); /// Assert that the selected file is an image
+//                     const image = form.querySelector("img");
+//                     if(image.src) URL.revokeObjectURL(image.src); /// The kind of URLs we are dealing with refer to in-memory objects, so we have to dispose of them when we no longer need them -- the user agent does not do this for us automatically.
+//                     image.src = URL.createObjectURL(files[0]); /// Display selected file with the `img` element
+//                 });
+//                 /// User agent is free to retain file selection even after the Web page has been re-loaded, so if there is [a selection], we fire a "change" event manually so that the handler defined above may reflect this as it ordinarily would.
+//                 if(file_input.files.length) file_input.dispatchEvent(new Event("change", { bubbles: true }));
+            </script>
+<!--         </form>                                  -->
                     <h5><?= htmlspecialchars($user['username']) ?></h5>
                     <p class="mb-0">Reputation: <?= $user['reputation'] ?></p>
                 </div>
             </div>
-        </div>
+      </div>
     
        
        
-       <!-- In the My Questions section -->
-<div class="card">
-    <div class="card-header">My Questions</div>
-    <div class="card-body">
+<!-- In the My Questions section -->
+<div id="accordion">
+
+    <h3>My Questions</h3>
+    <div>
         <?php foreach ($questions as $question): ?>
-            <div class="mb-3">
                 <h5><?= htmlspecialchars($question['title']) ?></h5>
                 <p><?= htmlspecialchars($question['body']) ?></p>
-            </div>
+                <p><?= htmlspecialchars($question['timestamp'])?></p>
+                <p><?= htmlspecialchars($question['bounty_id'])?></p>
+                <p><?= htmlspecialchars($question['programming_language_id'])?>
+                <p><?= htmlspecialchars($question['technology_catagory_id'])?>
         <?php endforeach; ?>
     </div>
-</div>
-<!-- selection dropdown  -->
-<div class="card text-center">
-    <div class="card-header">Update and Delete my Questions</div>
-    <div class="card-body">
+<!-- selection dropdown questions -->
+  	<h3>Update and Delete my Questions</h3>
+    <div>
         <form method="POST" action="update_delete_question.php" id="question_form">
-            <select name="question_id" class="selectpicker">
+            <select name="question_id">
                 <?php foreach ($questions as $question): ?>
                     <option value="<?= $question['id'] ?>"><?= htmlspecialchars($question['title']) ?></option>
                 <?php endforeach; ?>
@@ -173,76 +225,69 @@ if($query->num_rows > 0){
             <input type="submit" name="update" value="Update Question">
             <input type="submit" name="delete" value="Delete Question">
         </form>
-    </div>
-</div>
-
+	</div>
 
 <!-- In the My Answers section -->
-<div class="card">
-    <div class="card-header">My Answers</div>
-    <div class="card-body">
-        <?php foreach ($answers as $answer): ?>
-            <div class="mb-3">
-                <h5>Question: <?= htmlspecialchars($answer['question_id']) ?></h5> <!-- Display question ID or title if available -->
-                <p>Answer: <?= htmlspecialchars($answer['body']) ?></p>
-                <pre><code><?= htmlspecialchars($answer['file']) ?></code></pre>
-            </div>
-        <?php endforeach; ?>
-    </div>
-</div>
+    <h3>My Answers</h3>
+        <div> <!-- Display question ID or title if available -->    
+            <?php foreach ($answers as $answer): ?>
+                    <h5>Question: <?= htmlspecialchars($answer['question_id']) ?></h5>
+                    <p>Answer: <?= htmlspecialchars($answer['body']) ?></p>
+                    <p><?= htmlspecialchars($answer['code_body']) ?></p>
+            <?php endforeach; ?>
+        </div>
+    
 
-<!-- selection dropdown  -->
-<div class="card text-center">
-    <div class="card-header">Update and Delete my Answers</div>
-    <div class="card-body">
+<!-- selection dropdown for answers -->
+    <h3>Update and Delete my Answers</h3>
+    <div>
         <form method="POST" action="update_delete_answer.php" id="answer_form">
-            <select name="answer_id" class="selectpicker">
+            <select name="answer_id">
                 <?php foreach ($answers as $answer): ?>
-                    <option value="<?= $answer['id'] ?>"><?= "Question ID: " . htmlspecialchars($answer['question_id']) . ", Answer: " . htmlspecialchars($answer['body']) ?></option>
+                    <option value="<?= $answer['id'] ?>"><?= htmlspecialchars($answer['body']) ?></option>
                 <?php endforeach; ?>
             </select>
-            <textarea name="new_body" placeholder="New Body"></textarea>
+            <textarea name="new_content" placeholder="New Content"></textarea>
             <input type="submit" name="update" value="Update Answer">
             <input type="submit" name="delete" value="Delete Answer">
         </form>
     </div>
-</div>
 
 
 <!-- logout  -->
-<div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Logout</div>
-                <div class="card-body">
-                        <div class="mb-3">
-   						 <p><a href="logout.php">Logout</a></p>
-                        </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-<h2> Update or Delete your Profile</h2>
-<div class="card text-center">
-    <div class="card-body">
-        <form method="POST" action="update_delete_user.php">
+<h3>Logout</h3>
+	<div class="mb-3">
+		<p><a href="logout.php">Logout</a></p>
+	</div>
+      
+<h3> Update or Delete your Profile</h3>
+	<div>
+    	<form method="POST" action="update_delete_user.php">
             <input type="text" name="new_username" placeholder="New Username">
             <input type="text" name="new_email" placeholder="New Email">
             <input type="submit" name="update" value="Update User Info">
             <input type="submit" name="delete" value="Delete Account">
         </form>
-      </div>
+    </div>
+    
 </div>
+
 </main>
 
-<!-- initialize Bootstrap Select  -->
-<script>
-$(document).ready(function () {
-    $('.selectpicker').selectpicker();
-});
-</script>
 
-    </body>
+<script>
+  $( function() {
+    $( "#accordion" ).accordion();
+  } );
+
+  <!-- initialize Bootstrap Select  -->
+//   $(document).ready(function () {
+//       $('.selectpicker').selectpicker();
+//   });
+</script>
+</body>
+
     
      <!--Footer-->
     <div class="container">
@@ -264,3 +309,5 @@ $(document).ready(function () {
         </footer>
     </div>
 </html>
+
+

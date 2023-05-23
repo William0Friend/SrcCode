@@ -1,8 +1,6 @@
-
+	
 
 <?php
-
-
 session_start();
 require 'db_connection.php';
 if (mysqli_connect_errno()) {
@@ -23,7 +21,7 @@ if (!$result) {
 if ($result->num_rows > 0) {
     $div_data = "";
     while($row = $result->fetch_assoc()) {
-        $id = htmlspecialchars($row["id"]);
+//         $id = htmlspecialchars($row["id"]);
         $username = htmlspecialchars($row["username"]);
         $title = htmlspecialchars($row["title"]);
         $body = htmlspecialchars($row["body"]);
@@ -91,9 +89,6 @@ $questions = $result->fetch_all(MYSQLI_ASSOC);
                 <!-- pages only avaalile to the user -->
                 <?php if (isset($_SESSION["loggedin"])): ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="Question.php" title="question">Question</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link active" href="User.php" title="User">User</a>
                 </li>
                 
@@ -116,51 +111,93 @@ $questions = $result->fetch_all(MYSQLI_ASSOC);
 </nav>
 
     </header>
-<body>
+    
 <main>
 
 <!-- Unanswered questions table jquery version -->
 <table id="questionsTable" class="display">
     <thead>
         <tr>
-            <th>ID</th>
             <th>Username</th>
             <th>Title</th>
             <th>Body</th>
             <th>Bounty</th>
             <th>Timestamp</th>
+            <th>Actions</th>
+            <th>Q & A</th>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($questions as $question): ?>
             <tr>
-                <td><?php echo htmlspecialchars($question["id"]); ?></td>
                 <td><?php echo htmlspecialchars($question["username"]); ?></td>
-                <td><?php echo htmlspecialchars($question["title"]); ?></td>
+                <td><a href="Question_Individual_Generator.php?id=<?php echo htmlspecialchars($question["id"]); ?>"><?php echo htmlspecialchars($question["title"]); ?></a></td>
                 <td><?php echo htmlspecialchars($question["body"]); ?></td>
                 <td><?php echo htmlspecialchars($question["bounty"]); ?></td>
                 <td><?php echo htmlspecialchars($question["timestamp"]); ?></td>
+                <td>
+                	<a href="Question_Individual_Generator.php?id=<?php echo htmlspecialchars($question["id"]); ?>" class="btn btn-danger">Question</a></td>
+            	<td>
+				    <button type="button" class="btn btn-primary sellButton" data-bs-toggle="modal" data-bs-target="#sellSourceCodeModal" data-question-id="<?php echo htmlspecialchars($question["id"]); ?>">Answer</button>
+				</td>
             </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
 
+<div class="modal fade" id="sellSourceCodeModal" tabindex="-1" aria-labelledby="sellSourceCodeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="sellSourceCodeModalLabel">Sell Source Code</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="sellSourceCodeForm" method="POST" action="sell_source_code_action_2.php" class="mt-3">
+                    <input type="hidden" id="questionIdInput" name="questionId" />
+                    <h6 class="mb-2">Sell Source Code:</h6>
+                    <input type="text" id="title" name="title" placeholder="Source Code Title" class="form-control" />
+                    <textarea id="description" name="description" placeholder="Source Code Description" class="form-control mt-2" rows="4"></textarea>
+                    <textarea id="code" name="code" placeholder="Paste your source code here" class="form-control mt-2" rows="6"></textarea>
+                    <button type="submit" class="btn btn-secondary mt-2">Sell</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- call thhe dataTable  -->
 <script>
+//create answer button
 $(document).ready(function() {
-    $('#questionsTable').DataTable();
+	//call the datatable
+	$('#questionsTable').DataTable();
+
+    $('.sellButton').on('click', '.btn-primary', function(event) {
+        <?php if(isset($_SESSION['loggedin'])): ?>
+        var questionId = $(this).data('question-id');
+        $('#questionIdInput').val(questionId);
+        <?php else: ?>
+            // Redirect to login page
+            window.location.href = 'Login.php';
+        <?php endif; ?>
+    });
 });
+// $(document).ready(function() {
+//     $('#questionsTable').DataTable();
+
+//     $('.sellButton').on('click', function() {
+//         var questionId = $(this).data('question-id');
+//         $('#questionIdInput').val(questionId);
+//     });
+// });
+
 </script>
 
 
-<!-- Unanswered questions table php version-->
-<!--  <h2>Unanswered Questions</h2> -->
 
-<?php //echo $div_data ?>
-
-
-<!-- </main> -->
-
+ </main> 
 
     </body>
     
