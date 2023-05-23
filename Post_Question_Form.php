@@ -29,6 +29,18 @@ $technologyCatagories = $tcResult->fetch_all(MYSQLI_ASSOC);
 //urgency
 $questionUrgencies = array(1,2,3,4,5,6,7,8,9,10,-1);
 $questionUrgenciesCount = count($questionUrgencies);
+
+
+// $sql = "SELECT Questions.id, Users.username, Questions.title, Questions.body, Bounties.amount, Questions.timestamp
+//         FROM Questions
+//         LEFT JOIN Users ON Questions.user_id = Users.id
+//         LEFT JOIN Bounties ON Questions.bounty_id = Bounties.id
+//         WHERE Questions.id NOT IN (SELECT DISTINCT question_id FROM Answers)";
+// $result = $conn->query($sql);
+
+// if (!$result) {
+//     die("Query failed: " . $conn->error);
+// }
 ?>
 
 <!-- post_question.php -->

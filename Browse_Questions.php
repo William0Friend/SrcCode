@@ -89,7 +89,7 @@ $questions = $result->fetch_all(MYSQLI_ASSOC);
                 <!-- pages only avaalile to the user -->
                 <?php if (isset($_SESSION["loggedin"])): ?>
                 <li class="nav-item">
-                    <a class="nav-link active" href="User.php" title="User">User</a>
+                    <a class="nav-link" href="User.php" title="User">User</a>
                 </li>
                 
                 <li class="nav-item">

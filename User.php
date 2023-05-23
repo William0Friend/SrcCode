@@ -22,6 +22,7 @@ $query->bind_param('i', $_SESSION['id']);
 $query->execute();
 $result = $query->get_result();
 // get all the questions
+$questionID = $query->insert_id;
 $questions = $result->fetch_all(MYSQLI_ASSOC);
 
 // Fetch user's answers
@@ -31,6 +32,7 @@ $query->execute();
 $result = $query->get_result();
 //get all the answers
 $answers = $result->fetch_all(MYSQLI_ASSOC);
+
 
 ?>
 
@@ -159,22 +161,15 @@ if($image){
                 <?php endif; ?>
             </div>
             <!-- user sidebar toggle -->
-			    <button class="btn btn-primary me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">Toggle Sidebar</button>
-			
+            <div class="text-center">
+			    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">Toggle Sidebar</button>
+			</div>
                		<form action="upload_user_image_2.php" method="post" enctype="multipart/form-data">
                         Select Image File to Upload for your Profile Picture:
                         <input type="file" name="file">
                         <input type="submit" name="submit" value="Upload">
                     </form>
                     
-<!--                 
-                    
-<!--  <form enctype="multipart/form-data" method="post" action="http://httpbin.org/post"> -->
-<!--             <label for="file-input">Select an image file</label> -->
-<!--             <input accept="image/*" id="file-input" name="image" type="file"> -->
-<!--             <label for="file-selection-preview-image">Selected image</label> -->
-            <!--  <img id="file-selection-preview-image"> --><!-- this element will display selected image. -->
-<!--             <input type="submit"> -->
              <script> 
 //                 const form = document.currentScript.parentElement, file_input = form.elements.image;
 //                 file_input.addEventListener("change", function(ev) { /// Whenever the selection changes
@@ -201,19 +196,19 @@ if($image){
 <div id="accordion">
 
     <h3>My Questions</h3>
-    <div>
+    <div class="h-auto">	
         <?php foreach ($questions as $question): ?>
-                <h5><?= htmlspecialchars($question['title']) ?></h5>
-                <p><?= htmlspecialchars($question['body']) ?></p>
-                <p><?= htmlspecialchars($question['timestamp'])?></p>
-                <p><?= htmlspecialchars($question['bounty_id'])?></p>
-                <p><?= htmlspecialchars($question['programming_language_id'])?>
-                <p><?= htmlspecialchars($question['technology_catagory_id'])?>
+                <h5>Title: <?= htmlspecialchars($question['title']) ?></h5>
+                <p>Question: <?= htmlspecialchars($question['body']) ?></p>
+                <p>Posted: <?= htmlspecialchars($question['timestamp'])?></p>
+                <p>Bounty: <?= htmlspecialchars($question['bounty_id'])?></p>
+                <p>Programming Language: <?= htmlspecialchars($question['programming_language_id'])?></p>
+                <p>Technology Catagory: <?= htmlspecialchars($question['technology_catagory_id'])?></p>
         <?php endforeach; ?>
     </div>
 <!-- selection dropdown questions -->
   	<h3>Update and Delete my Questions</h3>
-    <div>
+    <div class="bg-dark text-center text-white">
         <form method="POST" action="update_delete_question.php" id="question_form">
             <select name="question_id">
                 <?php foreach ($questions as $question): ?>
@@ -229,18 +224,18 @@ if($image){
 
 <!-- In the My Answers section -->
     <h3>My Answers</h3>
-        <div> <!-- Display question ID or title if available -->    
+        <div class="h-auto"> <!-- Display question ID or title if available -->    
             <?php foreach ($answers as $answer): ?>
                     <h5>Question: <?= htmlspecialchars($answer['question_id']) ?></h5>
                     <p>Answer: <?= htmlspecialchars($answer['body']) ?></p>
-                    <p><?= htmlspecialchars($answer['code_body']) ?></p>
+                    <pre><code><?= htmlspecialchars($answer['code_body']) ?></code></pre>
             <?php endforeach; ?>
         </div>
     
 
 <!-- selection dropdown for answers -->
     <h3>Update and Delete my Answers</h3>
-    <div>
+    <div class="container">
         <form method="POST" action="update_delete_answer.php" id="answer_form">
             <select name="answer_id">
                 <?php foreach ($answers as $answer): ?>

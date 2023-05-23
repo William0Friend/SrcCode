@@ -18,7 +18,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>$rcCode</title>
+    <title>Registration</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <!--Javascript-->
     <!-- bootstrap  -->
@@ -86,27 +86,34 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
 
     <main>
 <div class="container">
+    <h2 class="my-3 text-center">Registration Form</h2>
     <form id="registrationForm" action="register_recaptcha_action.php" method="post">
         <div class="mb-3">
             <label for="username" class="form-label fw-bold">Username</label>
-            <input type="text" class="form-control" id="username" name="username" required>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Please choose a new username" required>
         </div>
         <div class="mb-3">
             <label for="email" class="form-label fw-bold">Email</label>
-            <input type="email" class="form-control" id="email" name="email" required>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Please enter your email" required>
         </div>
         <div class="mb-3">
             <label for="password" class="form-label fw-bold">Password</label>
-            <input type="password" class="form-control" id="password" name="password" required>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Please enter your password" required>
         </div>
         <div class="mb-3">
             <label for="confirm_password" class="form-label fw-bold">Confirm Password</label>
-            <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+            <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Please confirm your password" required>
         </div>
+         
+         
                 <!-- Add reCAPTCHA -->
-                <div class="g-recaptcha" data-sitekey="6LeX8QgmAAAAAOcNiIR33KEX93i3VpayxDWzBKzu"></div>
-                <button type="submit" class="btn btn-primary">Register</button>
-            </form>
+         <div class="g-recaptcha" data-sitekey="6LeX8QgmAAAAAOcNiIR33KEX93i3VpayxDWzBKzu">
+         
+         </div>
+         <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-primary align-center">Register</button>
+         </div>
+         </form>
 </div>
 
 <script>

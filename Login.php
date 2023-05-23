@@ -77,7 +77,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
 
 
 <div class="container">
-    <h2 class="my-3">Login Form</h2>
+    <h2 class="my-3 text-center">Login Form</h2>
     <form id="loginForm" method="POST" action="login_action.php">
         <?php if(isset($_GET['error'])): ?>
             <div class="alert alert-danger">
@@ -86,11 +86,11 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
         <?php endif; ?>
         <div class="mb-3">
             <label for="username" class="fw-bold">Username:</label>
-            <input type="text" class="form-control" id="username" name="username" required>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Please enter your username, not your email..." required>
         </div>
         <div class="mb-3">
             <label for="password" class="fw-bold">Password:</label>
-            <input type="password" class="form-control" id="password" name="password" required>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Please enter your password..." required>
         </div>
         <input type="submit" value="Login">
     </form>

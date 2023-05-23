@@ -1,6 +1,14 @@
+<?php
+?>
 <!DOCTYPE html>
 <html>
 <head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+<!--Javascript-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script></head>
+<!-- Client side validation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -15,7 +23,54 @@ $( function() {
 </script>
 </head>
 <body>
-    
+    <header>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" title="SrcCode - Sell Your Src Code">$rcCode</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="index.php">Home</a>
+                </li>
+                                <?php if (!isset($_SESSION["loggedin"])): ?>
+<!--                 <li class="nav-item"> -->
+<!--                     <a class="nav-link" href="Register.php" title="Register">Register</a> -->
+<!--                 </li> -->
+                <li class="nav-item">
+                    <a class="nav-link" href="Register_ReCAPTCHA.php" title="Register">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Login.php" title="Login">Login</a>
+                </li>
+                <?php endif; ?>
+                <!-- pages only avaalile to the user -->
+                <?php if (isset($_SESSION["loggedin"])): ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="User.php" title="User">User</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link " href="Post_Question_Form.php" title="Post Question">Post</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Sell_Source_Code.php" title="Sell Source Code">Sell</a>
+                </li>
+                <?php endif; ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="AboutUs.php" title="Register">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Browse_Questions.php" title="Browse">Browse Questions</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+</header>
 <?php
 require 'db_connection.php';
 
@@ -28,10 +83,24 @@ if (isset($_GET['id'])) {
     
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        echo "<h3>" . htmlspecialchars($row["title"]) . "</h3>";
-        echo "<div>";
-        echo "<p>" . htmlspecialchars($row["body"]) . "</p>";
+        
+        echo"<div class=\"container my-5\">";
+        echo "<div class=\"p-5 text-center bg-body-tertiary rounded-3 shadow-lg\">";
+        echo "<svg class=\"bi mt-4 mb-3\" style=\"color: var(--bs-indigo);\" width=\"100\" height=\"100\"><use xlink:href=\"#bootstrap\"></use></svg>";
+        echo "<h1 class=\"text-body-emphasis\">Question</h1>";
+                    echo "<h3>" . htmlspecialchars($row["title"]) . "</h3>";
+                    echo "<div>";
+                    echo "<p>" . htmlspecialchars($row["body"]) . "</p>";
+                    echo "</div>";
+        echo "<div class=\"d-inline-flex gap-2 mb-5\">";
+        echo "<button class=\"d-inline-flex align-items-center btn btn-primary btn-lg px-4 rounded-pill\" type=\"button\">";
+        echo "Answer";
+        echo "<svg class=\"bi ms-2\" width=\"24\" height=\"24\"><use xlink:href=\"#arrow-right-short\"></use></svg>";
+        echo "</button>";
         echo "</div>";
+        echo "</div>";
+        echo "</div>";
+                    
         
         $stmt = $conn->prepare("SELECT * FROM Answers WHERE question_id = ?");
         $stmt->bind_param('i', $id);
@@ -40,12 +109,15 @@ if (isset($_GET['id'])) {
         
         if ($answers->num_rows > 0) {
             while($answer_row = $answers->fetch_assoc()) {
-                echo "<h3>Answer</h3>";
+                
+                echo "<h3 class=\"text-center\">Answer</h3>";
                 echo "<div>";
-                echo "<p>" . htmlspecialchars($answer_row["body"]) . "</p>";
+                echo "<p class=\"text-center\">" . htmlspecialchars($answer_row["body"]) . "</p>";
                 echo "<div id='answer-".$answer_row['id']."' class='commentbox'></div>";
                 echo "</div>";
                 echo "<script>commentBox('answer-".$answer_row['id']."');</script>";
+                
+                
             }
         } else {
             echo "<h3>No answers yet.</h3>";
@@ -64,9 +136,10 @@ if (isset($_GET['id'])) {
 ?>
 
 <div class="container">
-	<a href="Browse_Questions.php"><button>Back to Questions</button></a>
+	<a href="Browse_Questions.php"><button class="btn btn-danger">Back to Questions</button></a>
 	
 </div>
+
 
  <!--Footer-->
     <div class="container">

@@ -33,15 +33,18 @@ if (!$result) {
 if ($result->num_rows > 0) {
     $table_data = "";
     while($row = $result->fetch_assoc()) {
-        $id = htmlspecialchars($row["id"]);
-        $username = htmlspecialchars($row["username"]);
-        $title = htmlspecialchars($row["title"]);
-        $body = htmlspecialchars($row["body"]);
-        $bounty = htmlspecialchars($row["amount"]);  // Now, this represents bounty fetched from Bounties table
-        $timestamp = htmlspecialchars($row["timestamp"]);
-        
-        $table_data .= "<tr><td>" . $username. "</td><td>" . $title. "</td><td>" . $body. "</td><td>" . $bounty. "</td><td>" . $timestamp. "</td></tr>";
-    }
+        if($row["username"] !== $_SESSION["username"])
+        {
+            $id = htmlspecialchars($row["id"]);
+            $username = htmlspecialchars($row["username"]);
+            $title = htmlspecialchars($row["title"]);
+            $body = htmlspecialchars($row["body"]);
+            $bounty = htmlspecialchars($row["amount"]);  // Now, this represents bounty fetched from Bounties table
+            $timestamp = htmlspecialchars($row["timestamp"]);
+            
+            $table_data .= "<tr><td>" . $username. "</td><td>" . $title. "</td><td>" . $body. "</td><td>" . $bounty. "</td><td>" . $timestamp. "</td></tr>";
+        }
+      }
 } else {
     $table_data = "<tr><td colspan='6'>No unanswered questions.</td></tr>";
 }
