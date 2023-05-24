@@ -114,7 +114,7 @@ $answers = $result->fetch_all(MYSQLI_ASSOC);
   </div>
   <div class="offcanvas-body">
     <div>
-      <!-- Add the content for your sidebar here. This can be navigation links, etc. -->
+      <!-- Add the content for sidebar here. This can be navigation links, etc. -->
     </div>
   </div>
 </div>
